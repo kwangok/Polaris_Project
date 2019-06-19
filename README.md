@@ -5,7 +5,7 @@
   <img width="260" height="200"  src="https://github.com/ahmadkh1995/Polaris_Project/blob/master/Polaris_Vicra.jpg">
 </p>
 
-This is a project based on Polaris Vicra sensor .
+This is a project based on Polaris Vicra sensor and has been written in C++ Language and project folder's name is "alba".
 
 3D Mechanical part of Rigid Body has been designed in FreeCad Design software.
 
