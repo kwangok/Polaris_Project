@@ -19,6 +19,7 @@ The Simulation environment is V-REP and APIs has been developed in VS2015.
 </p>
 
 below you can see photos of the Designed mechanical part in FreeCad :
+All 3D source files are located in FreeCad folder(.fcstd and .obj).
 
 <p align="center">
   <img width="200" height="150"  src="https://github.com/ahmadkh1995/Polaris_Project/blob/master/Polaris%203D/Polaris_1.png">
@@ -31,6 +32,19 @@ below you can see photos of the Designed mechanical part in FreeCad :
   <img width="200" height="150"  src="https://github.com/ahmadkh1995/Polaris_Project/blob/master/Polaris%203D/Polaris_5.png">
    <img width="200" height="150"  src="https://github.com/ahmadkh1995/Polaris_Project/blob/master/Polaris%203D/Polaris_6.png">
   <img width="200" height="150"  src="https://github.com/ahmadkh1995/Polaris_Project/blob/master/Polaris%203D/Polaris_7.png">
+</p>
+As you can see in photos ,there are 3 tools which designed in FreeCad.
+
+
+<p align="center">
+  <img width="200" height="150"  src="https://github.com/ahmadkh1995/Polaris_Project/blob/master/FreeCad/Part_2.png">
+   <img width="200" height="150"  src="https://github.com/ahmadkh1995/Polaris_Project/blob/master/FreeCad/Part2_2.png">
+  <img width="200" height="150"  src="https://github.com/ahmadkh1995/Polaris_Project/blob/master/FreeCad/Part2_3.png">
+</p>
+<p align="center">
+  <img width="200" height="150"  src="https://github.com/ahmadkh1995/Polaris_Project/blob/master/FreeCad/Part3_1.png">
+   <img width="200" height="150"  src="https://github.com/ahmadkh1995/Polaris_Project/blob/master/FreeCad/Part3_2.png">
+  <img width="200" height="150"  src="https://github.com/ahmadkh1995/Polaris_Project/blob/master/FreeCad/Part3_3.png">
 </p>
 <br> 
 Import to V-Rep enviorment as .obj file.
