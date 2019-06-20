@@ -47,7 +47,7 @@ As you can see in photos ,there are 3 tools which designed in FreeCad.
   <img width="200" height="150"  src="https://github.com/ahmadkh1995/Polaris_Project/blob/master/FreeCad/Part3_3.png">
 </p>
 <br> 
-Import to V-Rep enviorment as .obj file.
+Import to V-Rep enviornment as .obj file.
 <br> 
 <p align="center">
   <img width="350" height="230"  src="https://github.com/ahmadkh1995/Polaris_Project/blob/master/Polaris%203D/Polaris_8.png">
