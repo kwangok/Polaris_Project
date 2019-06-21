@@ -89,13 +89,12 @@ physical location of a port handle.
 note:  a port handle must be initialized (PINIT) before it can be enabled (PENA).
 
 -Commands must be sent from the host computer to the system in one of the two following formats. 
-<Command><SPACE><Parameter1><Parameter2>...<ParameterN><CR>
-
+<Command><SPACE><Parameter1><Parameter2>...<ParameterN><CR>.
  If a complete command is received by the system, replies are sent back in the format:
-<Reply><CRC16>
+ <Reply><CRC16>.
+  
 ----------------------------------------------------------------------------------------------
-These functions located in CombinedApi.cpp file
-
+These functions located in CombinedApi.cpp file.
 1. INIT ---->  CombinedApi::initialize()
 2.PHSR ----> CombinedApi::portHandleSearchRequest()
 3.PHINF ---->CombinedApi::portHandleInfo()
@@ -110,9 +109,8 @@ These functions located in CombinedApi.cpp file
 11.Get Data (BX) ---->getTrackingDataBX()
 12.Get Data (BX2) ---->getTrackingDataBX2()
 13. Get Errors or warning messages -----> getErrorString() ----------  getWarningString()  -------getErrorCodeFromResponse()
-14.Reads the response from the device ----> readResponse() 
-
--note that for processing the errors/warnings or reply we could use this convertion functions:
+14.Reads the response from the device ----> readResponse() .
+note that for processing the errors/warnings or reply we could use this convertion functions:
 A) string intToString()    B) stringToInt()    C) errorToString()
 
 ---------------------------------------------------------------------------------------------
@@ -127,6 +125,7 @@ These functions are in portHandleInfo.cpp
 Returns the port handle as a string---->getPortHandle()
 Returns the tool's revision number---->getRevision()
 Return the status as a string ----> getStatus() 
+
 ---------------------------------------------------------------------------------------------
 These functions are in GbfData3D.cpp
 "This class encapsulates 3D marker data as it is read from BX2"
@@ -142,6 +141,7 @@ Create a corresponding vector with the 3Ds -----> std::vector<MarkerData> list3D
 pos.x = reader.get_double();
 pos.y = reader.get_double();
 pos.z = reader.get_double();
+
 ----------------------------------------------------------------------------------------------
 
 
