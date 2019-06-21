@@ -82,8 +82,11 @@ physical location of a port handle.
 
 //Here we have 3 options:
 
+
 8a --->"3D" ---->Returns the latest three-dimensional marker position of a single marker or multiple markers.
+
 8b --->"BX" ---->Returns the latest tool transformations, individual marker positions, and system status in binary format.
+
 8c --->"TX" ---->Returns the latest tool transformations, individual marker positions, and system status in text format.
 
 note:  a port handle must be initialized (PINIT) before it can be enabled (PENA).
@@ -95,51 +98,82 @@ note:  a port handle must be initialized (PINIT) before it can be enabled (PENA)
   
 ----------------------------------------------------------------------------------------------
 These functions located in CombinedApi.cpp file.
-1. INIT ---->  CombinedApi::initialize()
+1.INIT ---->  CombinedApi::initialize()
+
 2.PHSR ----> CombinedApi::portHandleSearchRequest()
+
 3.PHINF ---->CombinedApi::portHandleInfo()
+
 3a.PHF ----> portHandleFree()
+
 4.PHRQ ---->CombinedApi::portHandleRequest()
+
 5.PINIT----> CombinedApi::portHandleInitialize()
+
 6.PENA---->CombinedApi::portHandleEnable()
+
 7.PVWR---->CombinedApi::loadSromToPort()
-8. Start to Track  ---->startTracking()
+
+8.Start to Track  ---->startTracking()
+
 9.Stop Tracking ---->stopTracking()
+
 10.Get Data (TX) ---->getTrackingDataTX()
+
 11.Get Data (BX) ---->getTrackingDataBX()
+
 12.Get Data (BX2) ---->getTrackingDataBX2()
-13. Get Errors or warning messages -----> getErrorString() ----------  getWarningString()  -------getErrorCodeFromResponse()
+
+13.Get Errors or warning messages -----> getErrorString()
+----------  getWarningString() 
+
+-------getErrorCodeFromResponse()
+
+
 14.Reads the response from the device ----> readResponse() .
+
 note that for processing the errors/warnings or reply we could use this convertion functions:
-A) string intToString()    B) stringToInt()    C) errorToString()
+A) string intToString() 
+
+B) stringToInt() 
+
+C) errorToString()
 
 ---------------------------------------------------------------------------------------------
 These functions located in MarkerData.cpp file
 -Marker status---->MarkerStatus() ---->"OK , MissingOutOfVolume ,Saturated ,..."
+
 -markerIndex
+
 -The marker position (x,y,z) [mm] ---->double x,y,z
 
 ---------------------------------------------------------------------------------------------
 These functions are in portHandleInfo.cpp
 
 Returns the port handle as a string---->getPortHandle()
+
 Returns the tool's revision number---->getRevision()
+
 Return the status as a string ----> getStatus() 
 
 ---------------------------------------------------------------------------------------------
 These functions are in GbfData3D.cpp
+
 "This class encapsulates 3D marker data as it is read from BX2"
 
 GbfData3D::GbfData3D(BufferedReader& reader,  int numberOfTools)
 
--Read the data--->toolHandle = reader.get_uint16(); 		numberOf3Ds = reader.get_uint16();
+-Read the data--->toolHandle = reader.get_uint16(); 
+numberOf3Ds = reader.get_uint16();
 
 Put the toolHandle into its own vector ---->toolHandles.push_back(toolHandle);
 
 Create a corresponding vector with the 3Ds -----> std::vector<MarkerData> list3Ds;
 
 pos.x = reader.get_double();
+
 pos.y = reader.get_double();
+
 pos.z = reader.get_double();
 
 ----------------------------------------------------------------------------------------------
