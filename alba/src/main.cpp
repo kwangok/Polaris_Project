@@ -8,13 +8,13 @@
 
 #include "PolarisProxy.hpp"
 #include "SimulatorProxy.hpp"
-
+using namespace std;
 
 
 /**
 * @brief Show the available functionalities for the user
 */
-void printMenu(const int& userType, const bool& polarisOK, const bool& simulatorOK){
+void printMenu(const int& userType, const bool& polarisOK, const bool& simulatorOK) {
 
 	std::cout << ""
 		"\n\n\nPlease select the desired functionality: ('*' ---> not available) \n"
@@ -22,14 +22,13 @@ void printMenu(const int& userType, const bool& polarisOK, const bool& simulator
 		"\t 2. Desired Pose Registration " << ((!polarisOK) ? "*" : "") << std::endl <<
 		"\t 3. Computer-Assisted Positioning " << ((!polarisOK) ? "*" : "") << std::endl;
 
-	if (userType == TECH_USER){
-		std::cout << "\t 4. Track and Visualize in V-REP Simulator " << ((!simulatorOK || !polarisOK) ? "*" : "") << std::endl;
-	}
-
-
-	std::cout << "\n\t 0. Exit the program." << std::endl;
+	if (userType == TECH_USER) {
+		std::cout << "\t 4. Track and Visualize in V-REP Simulator " << ((!simulatorOK || !polarisOK) ? "*" : "") << std::endl;	 
+		
+         }
+		std::cout << "\n\t 0. Exit the program." << std::endl;
+	
 }
-
 
 /**
 * @brief Allow selection of the action for the user
@@ -120,6 +119,9 @@ int main(int argc, const char** argv){
 	pp = new PolarisProxy();
 	pp->setPort(serialPort);
 	pp->init();
+
+	pp->toolInitAndEnable();
+	
 
 	sp = new SimulatorProxy();
 	sp->setIP(simIPAddress);

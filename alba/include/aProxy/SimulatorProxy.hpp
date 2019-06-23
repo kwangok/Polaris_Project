@@ -8,11 +8,16 @@ class SimulatorProxy : public SensorProxyInterface {
 
 public:
 
+	int load_scence(int tool_type);// Load the chosen scense w.r.t tool .srom
+
+	int connection_vrep(); //initialize connection to vrep
+
 
 	/**
 	* @brief Default constructor of SimulatorProxy
 	*/
 	SimulatorProxy();
+
 
 	/**
 	* @brief Default destroyer of SimulatorProxy
@@ -38,6 +43,8 @@ public:
 
 private:
 
+
+	
 
 	std::string IPaddress;				//!< The IP Address on which the V-REP simulator can be found
 

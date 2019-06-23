@@ -1,10 +1,20 @@
 #include "PolarisProxy.hpp"
+#include "SimulatorProxy.hpp"
+
+
+#include <vector>
+
 
 #ifdef DEBUG
 	#include <iostream>
 #endif
 
 #include <iostream>
+#include <fstream>
+#include <iomanip>
+#include <iostream>
+#include <sstream>
+#include <string>
 
 /**
 * @brief Constructor of PolarisProxy with Port Number argument
@@ -114,28 +124,137 @@ void PolarisProxy::determineApiSupportForBX2()
 *@brief Enable the tracking of a specific given tool
 *@param index of the tool list
 */
-void PolarisProxy::enableTracking(const int& toolID){
+
+
+void PolarisProxy::onErrorPrintDebugMessage(std::string methodName, int errorCode)
+{
+	if (errorCode < 0)
+	{
+		std::cout << methodName << " failed: " << capi->errorToString(errorCode) << std::endl;
+	}
+}
+
+
+void PolarisProxy::printToolData(const ToolData& toolData)
+{
+	if (toolData.systemAlerts.size() > 0)
+	{
+		std::cout << "[" << toolData.systemAlerts.size() << " alerts] ";
+		for (int a = 0; a < toolData.systemAlerts.size(); a++)
+		{
+			std::cout << toolData.systemAlerts[a].toString() << std::endl;
+		}
+	}
+}
+
+
+
+
+
+
+ //@brief Returns a string representation of the data in CSV format.
+ //@details The CSV format is : "Frame#,ToolHandle,Face,TransformStatus,q0,qx,qy,qz,tx,ty,tz,error,#markers,[Marker1:status,x,y,z],[Marker2..."
+ 
+std::string toolDataToCSV(const ToolData& toolData)
+{
+	std::stringstream stream;
+	stream << std::setprecision(toolData.PRECISION) << std::setfill('0');
+	stream << "" << static_cast<unsigned>(toolData.frameNumber) << ","
+		<< "Port:" << static_cast<unsigned>(toolData.transform.toolHandle) << ",";
+	if (toolData.transform.isMissing())
+	{
+		stream << "Missing,,,,,,,,";
+	}
+	else
+	{
+		stream << static_cast<unsigned>(toolData.transform.getFaceNumber()) << ","
+			<< TransformStatus::toString(toolData.transform.getErrorCode()) << ","
+			<< toolData.transform.q0 << "," << toolData.transform.qx << "," << toolData.transform.qy << "," << toolData.transform.qz << ","
+			<< toolData.transform.tx << "," << toolData.transform.ty << "," << toolData.transform.tz << "," << toolData.transform.error;
+
+		PolarisProxy sensor_data;
+		sensor_data.sensor_0 = toolData.transform.q0;      //quaternion parameters in camera coordinates [mm]
+		sensor_data.sensor_x = toolData.transform.qx;      //x position of Polaris Sensor
+		sensor_data.sensor_y = toolData.transform.qy;     //y position of Polaris Sensor
+		sensor_data.sensor_z = toolData.transform.qz;    //z position of Polaris Sensor
+
+		sensor_data.sensor_tx = toolData.transform.qx;      // x transformation parameters in camera coordinates [mm]
+		sensor_data.sensor_ty = toolData.transform.qy;     //y  transformation parameters in camera coordinates [mm]
+		sensor_data.sensor_tz = toolData.transform.qz;    //z transformation parameters in camera coordinates [mm]
+
+	}
+
+	// Each marker is printed as: status,tx,ty,tz
+	stream << "," << toolData.markers.size();
+	for (int i = 0; i < toolData.markers.size(); i++)
+	{
+		stream << "," << MarkerStatus::toString(toolData.markers[i].status);
+		if (toolData.markers[i].status == MarkerStatus::Missing)
+		{
+			stream << ",,,";
+		}
+		else
+		{
+			stream << "," << toolData.markers[i].x << "," << toolData.markers[i].y << "," << toolData.markers[i].z;
+		}
+	}
+	return stream.str();
+}
+
+
+
+
+
+
+
+
+void PolarisProxy::enableTracking(const int& toolID) {
 
 #ifdef DEBUG
 	std::cout << "Inside the Polaris Proxy thread. Doing nothing and exiting ... " << std::endl;
 #endif // DEBUG
 
-	this->tracking = true;
+	//get traking Data Bx
+	//Reply Option		m Data---->The data specific to the requested reply option. 
+	//the data stored in a vector called ToolData
 
-	while (this->tracking){
-	
+	//After get data , it should be stored in a variable and then called in Simulator Tracker 
+	for (int i = 0; i < 10; i++)
+	{
+		// Start tracking, output a few frames of data, and stop tracking
+		std::cout << std::endl << "Entering tracking mode and collecting data..." << std::endl;
+		onErrorPrintDebugMessage("capi.startTracking()", capi->startTracking());    //start tracking
+		for (int i = 0; i < 10; i++)
+		{
+
+			// Demonstrate BX command
+			toolData = capi->getTrackingDataBX();
+
+			// Print to stdout in similar format to CSV
+			std::cout << "[alerts] [buttons] Frame#,ToolHandle,Face#,TransformStatus,Q0,Qx,Qy,Qz,Tx,Ty,Tz,Error,#Markers,State,Tx,Ty,Tz" << std::endl;
+			for (int i = 0; i < toolData.size(); i++)
+			{
+				printToolData(toolData[i]);
+			}
+		}
+		// Stop tracking (back to configuration mode)
+		std::cout << std::endl << "Leaving tracking mode and returning to configuration mode..." << std::endl;
+		onErrorPrintDebugMessage("capi.stopTracking()", capi->stopTracking());
+
+	}
+}
 #ifdef DEBUG
 		std::cout << "[PP] Fake tracking (tracking: " << this->tracking << ")... " << std::endl;
 #endif // DEBUG
 
-	}
+
 
 #ifdef DEBUG
 	std::cout << "[PP] Exiting... " << std::endl;
 #endif // DEBUG
 
 
-}
+
 
 
 
@@ -163,7 +282,7 @@ void PolarisProxy::loadTool(const char* toolDefinitionFilePath){
 
 
 	// Load the .rom file using the previously obtained port handle
-	capi->loadSromToPort(toolDefinitionFilePath, portHandle);
+    capi->loadSromToPort(toolDefinitionFilePath, portHandle);
 
 #ifdef DEBUG
 	std::cout << "Tool loaded." << std::endl;
@@ -198,6 +317,9 @@ void PolarisProxy::toolInitAndEnable(){
 
 }
 
+
+
+
 /**
 * @brief Print Tracking data
 */
@@ -218,3 +340,7 @@ char* PolarisProxy::errorConnectionMessage(){
 	return "[POLARIS] Simulator not detected. Cannot run the required functionalities.";
 
 }
+
+
+
+

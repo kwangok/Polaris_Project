@@ -55,6 +55,10 @@ public:
 	*/
 	void toolInitAndEnable();
 
+
+
+
+
 	/**
 	* @brief Print Tracking data
 	*/
@@ -71,6 +75,20 @@ public:
 	*/
 	void enableTracking(const int& toolID);
 
+
+	void onErrorPrintDebugMessage(std::string methodName, int errorCode);
+
+
+	std::vector<ToolData> toolData;  // variable toolData 
+
+	double  sensor_0, sensor_x, sensor_y, sensor_z;
+	double   sensor_tx, sensor_ty, sensor_tz;
+
+	void printToolData(const ToolData& toolData);
+
+	std::string toolDataToCSV(const ToolData& toolData);
+
+
 	/**
 	*@brief Stop the running tracking 
 	*/
@@ -83,6 +101,7 @@ private:
 	bool apiSupportsBX2;				//!< If the APIs support BX2 or not (based on the revision number)
 	bool tracking;						//!< If the Polaris Sensor is tracking 
 
+	
 	/**
 	*@brief Verify if the sensor is properly connected to the system and ready for communication (set available flag)
 	*@return flag stating if the sensor is present

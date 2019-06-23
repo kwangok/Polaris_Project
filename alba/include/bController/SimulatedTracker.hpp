@@ -26,6 +26,14 @@ public:
 	/**
 	*@brief Send the request to close the thread for tracking in simulation
 	*/
+
+
+	void get_sensor_data(const ToolData& toolData);
+
+	double  sensor_0, sensor_x, sensor_y, sensor_z;
+	double  toVrep_0, toVrep_x,toVrep_y,toVrep_z;
+
+
 	inline void exit(){ pp.stopTracking(); this->exitRequest = true; }
 
 	/**
