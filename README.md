@@ -17,7 +17,9 @@ The Simulation environment is V-REP and APIs has been developed in VS2015.
   <img width="130" height="100" style="margin-left=10px;" src="https://github.com/ahmadkh1995/Polaris_Project/blob/master/vrep_logo.png">
   <img width="150" height="100" style="margin-left=20px;" src="https://github.com/ahmadkh1995/Polaris_Project/blob/master/vs2015.png">
 </p>
-
+ <p align="center">
+  <img width="460" height="340"  src="https://github.com/ahmadkh1995/Polaris_Project/blob/master/Tracker_project.png">
+</p>
 below you can see photos of the Designed mechanical part in FreeCad :
 All 3D source files are located in FreeCad folder(.fcstd and .obj).
 
