@@ -1,23 +1,9 @@
-﻿  extApiPlatform.c
-  Adding library: Winmm.lib
-  Adding library: Ws2_32.lib
-src\aProxy\extApiPlatform.c(638): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-src\aProxy\extApiPlatform.c(645): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-src\aProxy\extApiPlatform.c(646): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-src\aProxy\extApiPlatform.c(648): warning C4267: '-=': conversion from 'size_t' to 'simxInt', possible loss of data
-src\aProxy\extApiPlatform.c(649): warning C4267: '+=': conversion from 'size_t' to 'simxInt', possible loss of data
-  extApi.c
-  utils.cpp
-  main.cpp
+﻿  main.cpp
   SimulatedTracker.cpp
-  UserProxy.cpp
   TechUserProxy.cpp
   SimulatorProxy.cpp
-src\aProxy\SimulatorProxy.cpp(130): warning C4305: '+=': truncation from 'double' to 'float'
-src\aProxy\SimulatorProxy.cpp(136): warning C4305: '+=': truncation from 'double' to 'float'
-src\aProxy\SimulatorProxy.cpp(142): warning C4305: '+=': truncation from 'double' to 'float'
-src\aProxy\SimulatorProxy.cpp(148): warning C4305: '+=': truncation from 'double' to 'float'
-src\aProxy\SimulatorProxy.cpp(67): warning C4101: 'return_v': unreferenced local variable
+src\aProxy\SimulatorProxy.cpp(117): warning C4838: conversion from 'double' to 'const simxFloat' requires a narrowing conversion
+src\aProxy\SimulatorProxy.cpp(117): warning C4244: 'initializing': conversion from 'double' to 'const simxFloat', possible loss of data
   PolarisProxy.cpp
 LINK : warning LNK4075: ignoring '/INCREMENTAL' due to '/LTCG' specification
      Creating library C:\Users\AHMAD\Downloads\FinalSource\Software\alba\x64\Debug\alba.lib and object C:\Users\AHMAD\Downloads\FinalSource\Software\alba\x64\Debug\alba.exp

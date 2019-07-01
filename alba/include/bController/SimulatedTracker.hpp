@@ -28,10 +28,14 @@ public:
 	*/
 
 
-	void get_sensor_data(const ToolData& toolData);
+	void configurePassiveTools();
 
-	double  sensor_0, sensor_x, sensor_y, sensor_z;
-	double  toVrep_0, toVrep_x,toVrep_y,toVrep_z;
+	int sensor_type;
+	double transform_x, transform_y, transform_z;
+	
+	const char* tool_location = "";
+
+	void send_data_vrep();
 
 
 	inline void exit(){ pp.stopTracking(); this->exitRequest = true; }
@@ -65,6 +69,8 @@ public:
 	*@return the list of sensor tool names
 	*/
 	inline std::vector<std::string> getSensorToolNames() { return pp.getToolNameList(); };
+
+
 
 
 private:

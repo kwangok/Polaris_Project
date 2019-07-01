@@ -8,9 +8,8 @@ class SimulatorProxy : public SensorProxyInterface {
 
 public:
 
-	int load_scence(int tool_type);// Load the chosen scense w.r.t tool .srom
+	//int load_scence(int tool_type);// Load the chosen scense w.r.t tool .srom
 
-	int connection_vrep(); //initialize connection to vrep
 
 
 	/**

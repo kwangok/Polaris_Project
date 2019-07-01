@@ -45,9 +45,9 @@ SimulatorProxy::SimulatorProxy() {
 
 
 }
-
+/*
 // Load the chosen scense w.r.t tool .srom
-int SimulatorProxy::load_scence(int tool_type) {
+//int SimulatorProxy::load_scence(int tool_type) {
 
 	//Load Scence of Vrep
 	//  path = 'C:\Users\AHMAD\Downloads\My_Sample\Testing\vrepTest\Polaris_test.ttt';
@@ -69,11 +69,12 @@ int SimulatorProxy::load_scence(int tool_type) {
 
 
 int SimulatorProxy::connection_vrep() {
-
+*/
 		//"continuous remote API server service"
 		// Remember that v_repExtRemoteApi.dll plugin for V-rep's side loaded on startup
 		//Check also remoteApiConnections.txt file for port configuration
 
+void SimulatorProxy:: init() {
 		simxFinish(-1);                 //! Close any previously unfinished business
 		int clientID = 0;
 		Sleep(5000);
@@ -88,7 +89,7 @@ int SimulatorProxy::connection_vrep() {
 		if (clientID != -1)  // if Connection status is OK
 		{
 			
-			cout << " Connection with V-REP established" << endl;
+			cout << "Connection with V-REP established" << endl;
 			simxInt syncho = simxSynchronous(clientID, true);  //Synchronous with client
 
 			int sim_status;
@@ -96,26 +97,26 @@ int SimulatorProxy::connection_vrep() {
 			cout << "Simulation status: " << sim_status << endl;
 			if (sim_status == 1) {
 
-				cout << "Simulation Started ..." << endl;
+				cout << "Simulation in Vrep Started ..." << endl;
 			}
 			else {
-				cout << "Simulation Not Started ..." << endl;
+				cout << "Simulation in Vrep Not Started ..." << endl;
 			}
 
 			int polaris_probe = 0;
 			simxGetObjectHandle(clientID, "Shape", &polaris_probe, simx_opmode_oneshot_wait);  // Get Shape(RigidBody)
-			cout << "Now Move the Rigid Body to see the tracking results:" << endl;
-			
-			double x, y ,z;  //X ,Y,Z position
+						
+			double x=0, y=0 ,z=0;  //X ,Y,Z position
+			SimulatedTracker send_data;
+			PolarisProxy tracking_status;
+			while (tracking_status.track_status) {
+				
+					x = send_data.transform_x;
+					y = send_data.transform_y;
+					z = send_data.transform_z;
+					const simxFloat my_position[3] = { x,y,z }; //position of Object(Shape) in  X,Y,Z format inside Vrep
 
-			SimulatedTracker recieved_data;
-			while (1) {
-				x = recieved_data.toVrep_x;  //Assign recieved data from SimulatedTracker to Vrep position variables
-				y = recieved_data.toVrep_y;
-				z = recieved_data.toVrep_z;
-				const simxFloat my_position[3] = { x,y,z }; //position of Object(Shape) in  X,Y,Z format inside Vrep
-
-				simxSetObjectPosition(clientID, polaris_probe, -1, my_position, simx_opmode_oneshot_wait);  // Set new Object Position
+					simxSetObjectPosition(clientID, polaris_probe, -1, my_position, simx_opmode_oneshot_wait);  // Set new Object Position
 			}
 
 			Sleep(1000);
@@ -128,7 +129,6 @@ int SimulatorProxy::connection_vrep() {
 		}
 		simxFinish(clientID);
 
-		return(0);
 }
 
 /**
@@ -141,7 +141,7 @@ SimulatorProxy::~SimulatorProxy(){
 /**
 *@brief Initialization function
 */
-void SimulatorProxy::init(){}
+
 
 /**
 *@brief Verify if the sensor is properly connected to the system and ready for communication (set available flag)

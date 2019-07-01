@@ -21,6 +21,11 @@ public:
 	*/
 	~TechUserProxy();
 
+
+
+	const char* tool_location;
+
+
 	/**
 	* @brief Allow selection of the action for the user
 	* @param the code of the chosen option

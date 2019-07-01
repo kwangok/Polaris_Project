@@ -87,15 +87,13 @@ bool TechUserProxy::requestForTrackSimulator(const char** argv){
 	}
 
 	// 2. Load tools on Polaris and V-REP sides
-	// ...
+
 	int tool_type = toolOption;
-	SimulatorProxy start_vrep;
-	start_vrep.load_scence(tool_type); //Ask the Tech user the tool type and Load the corsponding scence
-	SimulatorProxy sim_object;
-	sim_object.connection_vrep(); // initialize coonection with v_rep //class function member defined in SimulatorProxy.hpp
+	simTrack.sensor_type = tool_type;  //Load srom file inside SimulatedTracker
 
-
-
+	simTrack.configurePassiveTools(); // Configure / Load tool on Polaris side
+		
+	
 	// 3. Run the SimulatedTracker functionality on a separate thread
 	std::thread trackThread = simTrack.startToolTrackingInSimulation(toolOption);
 
@@ -121,7 +119,8 @@ bool TechUserProxy::requestForTrackSimulator(const char** argv){
 		}
 	}
 
-
+	std::cout << "done." << std::endl;
+	std::cout << "Waiting for thread to return ... ";
 #ifdef DEBUG
 	std::cout << "done." << std::endl;
 	std::cout << "Waiting for thread to return ... ";

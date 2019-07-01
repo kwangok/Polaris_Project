@@ -50,19 +50,22 @@ public:
 	*/
 	void loadTool(const char* toolDefinitionFilePath);
 
+	//void configurePassiveTools();
+
+	//void Tracking();
 	/**
 	* @brief Initialize and enable the loaded tools
 	*/
 	void toolInitAndEnable();
 
 
-
-
-
 	/**
 	* @brief Print Tracking data
 	*/
-	void trackingDataPrint();
+	void trackingDataPrint(const ToolData& toolData);
+
+	double shared_tx, shared_ty, shared_tz;
+
 
 	/**
 	 *@brief Set function. Set the serial port of the Polaris
@@ -74,9 +77,8 @@ public:
 	*@param index of the tool list
 	*/
 	void enableTracking(const int& toolID);
+	
 
-
-	void onErrorPrintDebugMessage(std::string methodName, int errorCode);
 
 
 	std::vector<ToolData> toolData;  // variable toolData 
@@ -86,8 +88,9 @@ public:
 
 	void printToolData(const ToolData& toolData);
 
-	std::string toolDataToCSV(const ToolData& toolData);
+	void onErrorPrintDebugMessage(std::string methodName, int errorCode);
 
+	bool track_status;
 
 	/**
 	*@brief Stop the running tracking 

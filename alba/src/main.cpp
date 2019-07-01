@@ -120,7 +120,10 @@ int main(int argc, const char** argv){
 	pp->setPort(serialPort);
 	pp->init();
 
+	pp->configureUserParameters();
+//	pp->configurePassiveTools();
 	pp->toolInitAndEnable();
+	//pp->Tracking();
 	
 
 	sp = new SimulatorProxy();
