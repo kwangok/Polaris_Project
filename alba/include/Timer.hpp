@@ -6,9 +6,10 @@ class Timer{
 public:
 
 	/**
-	* @brief Default constructor of TechUserProxy
+	* @brief Default constructor of TechUserProxy with rate parameter
+	* @param rate_ the rate of the Timer (default is 20.0)
 	*/
-	Timer();
+	Timer(const double& rate_ = 20.0);
 
 	/**
 	* @brief Default destroyer of TechUserProxy

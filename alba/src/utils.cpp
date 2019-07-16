@@ -20,7 +20,7 @@ void onErrorPrintDebugMessage(const CombinedApi& capi, std::string methodName, i
 	}
 }
 
-
+#ifdef _WIN32
 /**
 * @brief There's no standard cross platform sleep() method prior to C++11
 */
@@ -28,6 +28,7 @@ void sleepSeconds(unsigned numSeconds)
 {
 	Sleep((DWORD)1000 * numSeconds); // Sleep(ms)
 }
+#endif
 
 /** Utility messages**/ /// <--- Maybe these cane become exceptions (future development)
 char* welcomeMessage(){
@@ -49,9 +50,9 @@ char* notAvailableOptionMessage(){
 
 }
 
-char* wrongToolOptionMessage(){
+char* wrongOptionMessage(){
 
-	return "\nThe chosen option does not correspond to an available tool name.";
+	return "\nThe choice does not correspond to an available option. Repeat your choice: \n";
 
 }
 
@@ -63,3 +64,4 @@ char* dismissalMessage(){
 	return "\nOne is glad to be of service.";
 
 }
+

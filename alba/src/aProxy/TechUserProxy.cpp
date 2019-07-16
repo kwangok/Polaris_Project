@@ -1,12 +1,12 @@
+#include "SimulatedTracker.hpp"
+
 // System Header files
-#ifdef DEBUG
-#include <iostream>
-#endif
 #include <iostream>
 
 // Project Header files
 #include "TechUserProxy.hpp"
-#include "SimulatedTracker.hpp"
+#include "KeyboardHandler.hpp"
+#include "Timer.hpp"
 
 /**
 * @brief Default constructor of TechUserProxy
@@ -48,86 +48,105 @@ int TechUserProxy::sendRequest(const int& req, const char** argv){
 */
 bool TechUserProxy::requestForTrackSimulator(const char** argv){
 
-	// Variables initialization
-	bool ret = false;
-	std::vector<std::string> toolNames;
-	int toolOption = NULL;
-
 #ifdef DEBUG
 	std::cout << "[U] Forwarding Simulator procedure request ... " << std::endl;
 #endif
 
+	// Variables initialization
+	double dt, et, rate, tic, toc, tac, Ts;
+	bool ret = false;
+	std::vector<std::string> toolNames;
+	std::string polarisShdMemName;
+	int toolOption = NULL;
+    int key = 0;
+    bool kbhitFlag = false;
+	double* data;
+	KeyboardHandler kb;
+	Timer clock;
+
 	// Create a static instance of the coordinator class SimulatedTracker
 	SimulatedTracker simTrack;
 
-	// 0a. Connect to the devices (in this point presence check is already done)
-	// Convention: the input passed arguments are: 1: Polaris Serial Port ; 2: V-REP IP Address
-	simTrack.setPolarisPort(std::string(argv[1]));
-	simTrack.setSimIP(std::string(argv[2]));
+	// Get the clock rate
+	rate = clock.getRate();
+	Ts = 1.0 / rate;
 
-	// 0b. Acquire the list of tool names
-	toolNames = simTrack.getSensorToolNames();
+	// 1. Initialize the required external systems (Polaris Sensor and V-REP simulators)
+	initExtSystems(&simTrack, argv);
 
-	// 1. Let the User choose the tool to load
-	while (toolOption == NULL || (toolOption <= 0 || toolOption > toolNames.size())) {
+	// 2. Request for the Polaris tool type
+	std::vector<std::string> polarisToolList = simTrack.getSensorToolNames();
+	toolOption = chooseFromList(polarisToolList);
 
-		// Raise error message in case of wrong input
-		if (toolOption != NULL){
-			std::cout << "Error: " << wrongToolOptionMessage() << std::endl;
-		}
-		
-		std::cout << "Select the tool that you want to track: \n" << std::endl;
-		for (int i = 0; i < toolNames.size(); i++){
-			std::cout << "\t " << i + 1 << ": " << toolNames[i] << std::endl;
-		}
+	// 3. Create a shared memory to share data with the Polaris thread, before its creation
+	simTrack.createShdMem();
 
-		// Acquire input from the user
-		std::cin >> toolOption;
+	// 4. Launch parallel thread to share data
+	std::thread trackThread = simTrack.startToolTracking(toolOption);
 
-	}
-
-	// 2. Load tools on Polaris and V-REP sides
-
-	int tool_type = toolOption;
-	simTrack.sensor_type = tool_type;  //Load srom file inside SimulatedTracker
-
-	simTrack.configurePassiveTools(); // Configure / Load tool on Polaris side
-		
-	
-	// 3. Run the SimulatedTracker functionality on a separate thread
-	std::thread trackThread = simTrack.startToolTrackingInSimulation(toolOption);
-
-	// 4. Wait for exit request from the user
-	std::cout << "Tracking started. \n"
-		"Press ESC when you want to stop tracking... " << std::endl;
-
+	std::cout << "Tracking started. Press ESC when you want to stop tracking... " << std::endl;
+	// 5. Wait for exit request from the user
 	while (!simTrack.isExitRequested()){
 	
-		if (_kbhit()){ // Keyboard hit utility function
+		// Measure starting time
+		tic = clock.getCurTime();
 
-			// Acquire hit character
-			int key = _getch();
+		//----------------------------------------------------------------//
+		// Do stuff here... 
 
-			// If ESCAPE bar hit
+		// If a key is pressed ...
+		kbhitFlag = kb.kbhit();
+		if (kbhitFlag){
+
+			// Get the current value
+			key = kb.getChar();
+
+			// If the key is ESC, terminate
 			if (key == ESCAPE){
-#ifdef DEBUG
-				std::cout << "\nTerminating the Tracking in Simulation mode...";
-#endif //DEBUG
-				// 5. Send the exit request to the SimulatedTracker thread
+				// 6. Send the exit request to the thread and exit
 				simTrack.exit();
 			}
 		}
+
+		// 7. Read data from shared memory
+		data = simTrack.readDataFromShdMem();
+
+		// Print acquired data
+		//this->printToolData(data);
+
+		//Send Data to SimulatedTracker 
+		simTrack.sendDataToSimProxy(data);
+		//----------------------------------------------------------------//
+
+		// Measure the ending time and the elapsed time
+		toc = clock.getCurTime();
+		dt = clock.elapsedTime(tic, toc);
+
+		// Wait until Ts
+		if (dt < Ts){
+			clock.timeSleep(Ts - dt);
+		}
+
+		// Measure the final time after sleep to check the actual rate of the thread
+		tac = clock.getCurTime();
+		et = clock.elapsedTime(tic, tac);
+
+#ifdef DEBUG
+		std::cout << "[TUP] Running rate " << 1.0/et << " Hz" << std::endl;
+#endif // DEBUG
 	}
 
-	std::cout << "done." << std::endl;
-	std::cout << "Waiting for thread to return ... ";
+
 #ifdef DEBUG
 	std::cout << "done." << std::endl;
 	std::cout << "Waiting for thread to return ... ";
 #endif //DEBUG
 
+	// N. Remove the shared memory
+	simTrack.removeShdMem();
+
 	// 6. Join the threads
-	trackThread.join();
+    trackThread.join();
 
 #ifdef DEBUG
 	std::cout << "done." << std::endl;
@@ -145,5 +164,18 @@ bool TechUserProxy::requestForTrackSimulator(const char** argv){
 bool TechUserProxy::checkOptionValidity(const int& op){
 
 	return UserProxy::checkOptionValidity(op) || (op == TRACK_SIMULATOR);
+
+}
+
+void TechUserProxy::initExtSystems(SimulatedTracker* trackPtr, const char** argv){
+
+	// 1-4. Initialize the Polaris sensor and let the user choose the tool to use
+	UserProxy::initExtSystems(trackPtr, argv);
+
+	// 5. Set the IP address of the V-REP simulator
+	trackPtr->setSimIP(std::string(argv[2]));
+
+	// 6. Connect the V-REP simulator
+	trackPtr->initVREP();
 
 }

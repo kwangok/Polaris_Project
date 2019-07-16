@@ -4,6 +4,8 @@
 // System Header file
 #include <string>
 #include <vector>
+#include <thread>
+
 
 #define TOOLS_NUM 3
 
@@ -16,7 +18,7 @@ public:
 	*/
 	SensorProxyInterface(){
 	
-		this->toolList.push_back("8700338.rom"); 
+		this->toolList.push_back("8700338.rom");
 		this->toolList.push_back("8700339.rom");
 		this->toolList.push_back("8700340.rom");
 

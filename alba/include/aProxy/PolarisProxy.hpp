@@ -9,6 +9,7 @@
 // Project Header files
 #include "SensorProxyInterface.hpp"
 
+#define POSE_DIM 7
 
 class PolarisProxy : public SensorProxyInterface {
 
@@ -50,34 +51,49 @@ public:
 	*/
 	void loadTool(const char* toolDefinitionFilePath);
 
-	//void configurePassiveTools();
-
-	//void Tracking();
 	/**
 	* @brief Initialize and enable the loaded tools
 	*/
 	void toolInitAndEnable();
 
-
 	/**
-	* @brief Print Tracking data
+	* @brief Print Tracking data (from ToolData structure)
+	* @param Tracked data (in form of ToolData structure)
 	*/
-	void trackingDataPrint(const ToolData& toolData);
+	void printTrackingData(const std::vector<ToolData>& td);
 
+
+
+	void trackingDataPrint(const ToolData& td);
 	double shared_tx, shared_ty, shared_tz;
 
 
+
 	/**
-	 *@brief Set function. Set the serial port of the Polaris
+	* @brief Print Tracking data (from static array)
+	* @param Tracked data (in form of static array)
+	*/
+	void printTrackingData(const double* val);
+
+	/**
+	*@brief Set function. Set the serial port of the Polaris
 	*/
 	inline void setPort(const std::string& port_){ this->serialPort = port_; }
 
 	/**
-	*@brief Enable the tracking of a specific given tool
-	*@param index of the tool list
+	*@brief Set function. Set the serial port of the Polaris
 	*/
-	void enableTracking(const int& toolID);
-	
+	inline std::string getShdMemName(){ return this->shdMemName; }
+
+	/**
+	*@brief Set function. Set the serial port of the Polaris
+	*/
+	inline void setShdMemName(const std::string& shdmemname_){ this->shdMemName = shdmemname_; }
+
+	/**
+	*@brief Enable the tracking of a specific given tool
+	*/
+	void enableTracking();
 
 
 
@@ -92,19 +108,33 @@ public:
 
 	bool track_status;
 
+
+
+
+
 	/**
 	*@brief Stop the running tracking 
 	*/
 	inline void stopTracking() { this->tracking = false; }
 
+	/**
+	* @brief Convert the Transform data stored in a ToolData structure to a static array
+	* @param the input ToolData structure
+	* @return the output static array
+	*/
+	double* toolData2StaticArray(const ToolData& td);
+
+	bool tracking_vrep;
+
 private:
 
 	CombinedApi* capi;					//!< Dynamic instance of NDI Combined Class
 	std::string serialPort;				//!< String storing the Serial COM port on which the Sensor is connected
+	std::string shdMemName;				//!< Desired name of the shared memory to be created for data sending from a separate thread
 	bool apiSupportsBX2;				//!< If the APIs support BX2 or not (based on the revision number)
 	bool tracking;						//!< If the Polaris Sensor is tracking 
+	double samplingRate;				//!< Sampling rate of the Polaris sensor (default is 20Hz)
 
-	
 	/**
 	*@brief Verify if the sensor is properly connected to the system and ready for communication (set available flag)
 	*@return flag stating if the sensor is present

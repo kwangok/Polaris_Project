@@ -10,10 +10,10 @@
 /**
 * @brief Default constructor of TechUserProxy
 */
-Timer::Timer(){
+Timer::Timer(const double& rate_){
 
 	// Set the Timer rate
-	this->setRate(20.0);
+	this->setRate(rate_);
 
 }
 

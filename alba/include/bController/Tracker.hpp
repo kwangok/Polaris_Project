@@ -5,6 +5,11 @@
 #include "PolarisProxy.hpp"
 #include "Applicator.hpp"
 
+// Boost Header files
+#include <boost/interprocess/shared_memory_object.hpp> // for shared_memory usage
+#include <boost/interprocess/mapped_region.hpp> // for mapped region usage
+using namespace boost::interprocess;
+
 class Tracker{
 
 public:
@@ -55,10 +60,32 @@ public:
 	inline std::vector<std::string> getApplicatorList() { return ap.getNamesList(); };
 
 	/**
+	*@brief Get function. Get the name of the shared memory to create for the Polaris thread
+	*@return the name of the shared memeory
+	*/
+	inline std::string getPolarisShdMem() { return pp.getShdMemName(); };
+
+	/**
 	*@brief Start the tracking of the given tool
 	*@param the index of the tool list identifying the tool to be tracked
 	*/
 	std::thread startToolTracking(const int toolID);
+
+	/**
+	*@brief Create the shared memory on which read data from Polaris thread (initialize shdMem member variable)
+	*/
+	void createShdMem();
+
+	/**
+	* @brief Read data from Polaris thread 
+	* @return a static array containing the read data
+	*/
+	double* readDataFromShdMem();
+
+	/**
+	*@brief Remove the previously created shared memory on which read data from Polaris thread (delete shdMem member variable)
+	*/
+	void removeShdMem();
 
 protected:
 
@@ -66,7 +93,7 @@ protected:
 	PolarisProxy pp;			//!< Static instance of the PolarisProxy class
 	Applicator ap;				//!< Static instance of an Applicator class
 
-
+	shared_memory_object shdMem;
 };
 
 #endif //TRACKER_HPP_

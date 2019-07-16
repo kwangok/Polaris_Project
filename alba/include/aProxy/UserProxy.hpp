@@ -3,12 +3,13 @@
 
 // Project Header files
 #include "UserProxyInterface.hpp"
+#include "Tracker.hpp"
 #include "utils.hpp"
 
 // Action type defines
 #define PAIRING 1
 #define REGISTRATION 2
-#define POSITIONING 3
+#define TRACKING 3
 #define QUIT_INPUT 0
 
 class UserProxy : public UserProxyInterface {
@@ -50,14 +51,35 @@ public:
 	bool requestForRegistration(const char** argv);
 
 	/**
-	* @brief Method that forwards the request to start the Computer-Assisted Positioning procedure
+	* @brief Method that forwards the request to start the Applicator tracking procedure
+	* @param the set of input arguments passed to the program
 	*/
-	bool requestForComputerAssistedPositioning();
+	bool requestForApplicatorTracking(const char** argv);
 
 	/**
 	* @brief Check if the user is a technician
 	*/
 	inline bool isATechUser(){ return false; }
+
+	/**
+	* @brief Method that initializes the connected devices
+	* @param a static instance of the Tracker class
+	* @param the input arguments of the program
+	*/
+	void initExtSystems(Tracker* trackPtr, const char** argv);
+
+	/**
+	* @brief Let the user choice an option in a given list
+	* @param the list of names 
+	* @return the index of the chosen option
+	*/
+	int chooseFromList(const std::vector<std::string>& list);
+
+	/**
+	* @brief Print data acquired from Polaris (from static array)
+	* @param Acquired data (in form of static array)
+	*/
+	void printToolData(const double* data);
 
 protected:
 

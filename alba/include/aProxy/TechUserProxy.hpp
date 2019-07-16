@@ -3,6 +3,7 @@
 
 // Project Header files
 #include "UserProxy.hpp"
+#include "SimulatedTracker.hpp"
 
 // Action type define
 #define TRACK_SIMULATOR 4
@@ -10,6 +11,8 @@
 class TechUserProxy : public UserProxy {
 
 public:
+
+	double* share_data;
 
 	/**
 	* @brief Default constructor of TechUserProxy
@@ -20,11 +23,6 @@ public:
 	* @brief Default destroyer of TechUserProxy
 	*/
 	~TechUserProxy();
-
-
-
-	const char* tool_location;
-
 
 	/**
 	* @brief Allow selection of the action for the user
@@ -46,6 +44,12 @@ public:
 	*/
 	inline bool isATechUser(){ return true; }
 
+	/**
+	* @brief Method that initializes the connected devices and let the user choose the tools
+	* @param a static instance of the Tracker class
+	* @param the input arguments of the program
+	*/
+	void initExtSystems(SimulatedTracker* trackPtr, const char** argv);
 
 private:
 

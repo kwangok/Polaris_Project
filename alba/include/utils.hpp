@@ -6,10 +6,11 @@
 #include <iomanip>
 #include <sstream>
 #include <string>
-#include <conio.h>
 
-// For Windows Sleep(ms)
-#include <windows.h>
+#ifdef _WIN32
+   // For Windows Sleep(ms)
+   #include <windows.h>
+#endif //_WIN32
 
 // NDI Header files //TODO: IT MAY BE REDUNDANT INCLUSION. CONSIDER REMOVAL
 #include "CombinedApi.h"
@@ -32,11 +33,12 @@
 */
 void onErrorPrintDebugMessage(const CombinedApi& capi, std::string methodName, int errorCode);
 
+#ifdef _WIN32
 /**
 * @brief There's no standard cross platform sleep() method prior to C++11
 */
 void sleepSeconds(unsigned numSeconds);
-
+#endif
 
 
 /** Utility messages**/ /// <--- Maybe these cane become exceptions (future development)
@@ -58,7 +60,7 @@ char* notAvailableOptionMessage();
 /**
 * @brief show the not available tool name message
 */
-char* wrongToolOptionMessage();
+char* wrongOptionMessage();
 
 /**
 * @brief show the dismissal message
