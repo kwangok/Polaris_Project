@@ -1,7 +1,7 @@
 ## NDI Polaris Sensor Tracker Project 
 
  <p align="center">
-  <img width="260" height="200"  src="https://github.com/ahmadkh1995/Polaris_Project/blob/master/Polaris_Vicra.jpg">
+  <img width="300" height="150"  src="https://github.com/ahmadkh1995/Polaris_Project/blob/master/Polaris_Vega.png">
 </p>
 
 This is a project based on **NDI Polaris Vega sensor** (Also it can be used for Vicra Sensor) and has been written in C++ Language and project code for this framework is located in the folder "alba".
@@ -131,9 +131,9 @@ physical location of a port handle.
 
 These functions located in **CombinedApi.cpp** file.
 
-    1)INIT ---->  CombinedApi::initialize()
+    1.INIT ---->  CombinedApi::initialize()
 
-    2)PHSR ----> CombinedApi::portHandleSearchRequest()
+    2.PHSR ----> CombinedApi::portHandleSearchRequest()
 
     3.PHINF ---->CombinedApi::portHandleInfo()
 
