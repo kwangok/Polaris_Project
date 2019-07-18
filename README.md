@@ -86,9 +86,17 @@ Framework :
 
 The Polaris Sensor's Low-Level Commnads which should be initialized till framework starts to recieve position data
 
-### Flowchart 
+### Flowchart of the System(with Low-Level Functions)
+
+<p align="center">
+
+  <img width="280" height="500"  src="https://github.com/ahmadkh1995/Polaris_Project/blob/master/Polaris%203D/FlowChart.PNG">
+</p>
 
 
+
+
+**Description of Some of main C++ functions in Polaris API 
 
 1---> "INIT" ----> Initializes the system.
 
@@ -123,7 +131,9 @@ note:  a port handle must be initialized (PINIT) before it can be enabled (PENA)
  If a complete command is received by the system, replies are sent back in the format:
  <Reply><CRC16>.
   
-**These functions located in CombinedApi.cpp file.**
+**Description of Some of main C++ functions in Polaris API **
+
+These functions located in **CombinedApi.cpp** file.
 
 1.INIT ---->  CombinedApi::initialize()
 
@@ -151,23 +161,25 @@ note:  a port handle must be initialized (PINIT) before it can be enabled (PENA)
 
 12.Get Data (BX2) ---->getTrackingDataBX2()
 
-13.Get Errors or warning messages -----> getErrorString()
-----------  getWarningString() 
+13.Get Errors or warning messages:
 
--------getErrorCodeFromResponse()
-
+ getErrorString()
+ getWarningString() 
+ getErrorCodeFromResponse()
 
 14.Reads the response from the device ----> readResponse() .
 
 note that for processing the errors/warnings or reply we could use this convertion functions:
+
 A) string intToString() 
 
 B) stringToInt() 
 
 C) errorToString()
 
----------------------------------------------------------------------------------------------
-These functions located in MarkerData.cpp file
+
+These functions located in **MarkerData.cpp** file
+
 -Marker status---->MarkerStatus() ---->"OK , MissingOutOfVolume ,Saturated ,..."
 
 -markerIndex
@@ -175,7 +187,7 @@ These functions located in MarkerData.cpp file
 -The marker position (x,y,z) [mm] ---->double x,y,z
 
 ---------------------------------------------------------------------------------------------
-These functions are in portHandleInfo.cpp
+These functions are in **portHandleInfo.cpp**
 
 Returns the port handle as a string---->getPortHandle()
 
@@ -184,9 +196,9 @@ Returns the tool's revision number---->getRevision()
 Return the status as a string ----> getStatus() 
 
 ---------------------------------------------------------------------------------------------
-These functions are in GbfData3D.cpp
+These functions are in **GbfData3D.cpp**
 
-"This class encapsulates 3D marker data as it is read from BX2"
+**This class encapsulates 3D marker data as it is read from BX2**
 
 GbfData3D::GbfData3D(BufferedReader& reader,  int numberOfTools)
 
@@ -203,7 +215,6 @@ pos.y = reader.get_double();
 
 pos.z = reader.get_double();
 
-----------------------------------------------------------------------------------------------
 
 
 
