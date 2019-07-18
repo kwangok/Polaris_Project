@@ -22,13 +22,17 @@ The Simulation environment is **V-REP** and APIs has been developed in **Visual 
 </p>
 
 Goals of this project is :
+
 **I** Design 3D Mechanical part of the tools(Here we have 3 tools) in FreeCAD  and import them as Object to V-Rep environment.
-**II** Connect VS2015 to V-Rep API and send and receive (Position/Orientation) data to Object in V-rep with keyboard's keys
-**III** Connect VS2015 to Polaris Vega's API and recieve some data of tool Markers  
-**V** Visulaize the Polaris Tool in V-rep stimuasly based on Tool's position and data (which is acquiring by Polaris Sensor)
+
+**II** Connect VS2015 to V-Rep API and send and receive (Position/Orientation) data to Object in V-rep with keyboard's keys.
+
+**III** Connect VS2015 to Polaris Vega's API and recieve some data of tool Markers.
+
+**V** Visulaize the Polaris Tool in V-rep stimuasly based on Tool's position and data (which is acquiring by Polaris Sensor).
 
 
-below you can see photos of the Designed mechanical part in FreeCad :
+below you can see photos of the Designed mechanical part in FreeCad.
 All 3D source files are located in FreeCad folder(.fcstd and .obj).
 
 <p align="center">
@@ -80,9 +84,11 @@ Framework :
 
 
 
-The API Commnads which should be initialized till framework starts to recieve position data
+The Polaris Sensor's Low-Level Commnads which should be initialized till framework starts to recieve position data
 
-First check flowchart in page-26
+### Flowchart 
+
+
 
 1---> "INIT" ----> Initializes the system.
 
