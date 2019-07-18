@@ -18,7 +18,8 @@ The Simulation environment is V-REP and APIs has been developed in VS2015.
   <img width="150" height="100" style="margin-left=20px;" src="https://github.com/ahmadkh1995/Polaris_Project/blob/master/vs2015.png">
 </p>
  <p align="center">
-  <img width="460" height="340"  src="https://github.com/ahmadkh1995/Polaris_Project/blob/master/Tracker_project.png">
+ This system will be used in surgery room to assist surgeon in collaberating with a Robotic system.
+  <img width="460" height="340"  src="https://github.com/ahmadkh1995/Polaris_Project/blob/master/Polaris%203D/Tracker_project.png">
 </p>
 below you can see photos of the Designed mechanical part in FreeCad :
 All 3D source files are located in FreeCad folder(.fcstd and .obj).
@@ -49,10 +50,18 @@ As you can see in photos ,there are 3 tools which designed in FreeCad.
   <img width="200" height="150"  src="https://github.com/ahmadkh1995/Polaris_Project/blob/master/FreeCad/Part3_3.png">
 </p>
 <br> 
-Import to V-Rep enviornment as .obj file.
+Import to V-Rep enviornment as .obj file and attach a dummy.
 <br> 
 <p align="center">
-  <img width="350" height="230"  src="https://github.com/ahmadkh1995/Polaris_Project/blob/master/Polaris%203D/Polaris_8.png">
+  <img width="200" height="150"  src="https://github.com/ahmadkh1995/Polaris_Project/blob/master/Polaris%203D/Dummy1.PNG">
+   <img width="200" height="150"  src="https://github.com/ahmadkh1995/Polaris_Project/blob/master/Polaris%203D/Dummy2.PNG">
+   <img width="200" height="150"  src="https://github.com/ahmadkh1995/Polaris_Project/blob/master/Polaris%203D/Dummy3.PNG">
+ </P>
+ <br> 
+<p align="center">
+  <img width="300" height="230"  src="https://github.com/ahmadkh1995/Polaris_Project/blob/master/Polaris%203D/Dummy1_b.PNG">
+  <img width="300" height="230"  src="https://github.com/ahmadkh1995/Polaris_Project/blob/master/Polaris%203D/Dummy2_b.PNG">
+
 </p>
 
 Framework :
@@ -106,8 +115,8 @@ note:  a port handle must be initialized (PINIT) before it can be enabled (PENA)
  If a complete command is received by the system, replies are sent back in the format:
  <Reply><CRC16>.
   
-----------------------------------------------------------------------------------------------
-These functions located in CombinedApi.cpp file.
+Some of Low-Level Functions needed for this project :
+
 1.INIT ---->  CombinedApi::initialize()
 
 2.PHSR ----> CombinedApi::portHandleSearchRequest()
