@@ -29,7 +29,7 @@ Goals of this project is :
 
 **III)** Connect VS2015 to Polaris Vega's API and recieve some data of tool Markers.
 
-**V)** Visulaize the Polaris Tool in V-rep stimuasly based on Tool's position and data (which is acquiring by Polaris Sensor).
+**IV)** Visulaize the Polaris Tool in V-rep stimuasly based on Tool's position and data (which is acquiring by Polaris Sensor).
 
 
 below you can see photos of the Designed mechanical part in FreeCad.
@@ -127,6 +127,7 @@ physical location of a port handle.
 **note:  a port handle must be initialized (PINIT) before it can be enabled (PENA).**
   
 ### Description of Some of main C++ functions in Polaris API **
+**These files are not included in the Project folder **
 
 These functions located in **CombinedApi.cpp** file.
 
@@ -210,6 +211,125 @@ pos.y = reader.get_double();
 
 pos.z = reader.get_double();
 
+### V-Rep API Codes:
+**Notes:** For Connecting the project to V-Rep we should add following directories to the "Additional Include Directories" inside the Visual Studio 2015:
+
+         C:\Program Files\V-REP3\V-REP_PRO_EDU\programming\remoteApi
+
+         C:\Program Files\V-REP3\V-REP_PRO_EDU\programming\include
+
+also we should add theses lines to preprocessor definition in Project properties section:
+(because extApi might get parsed/compiled before your file where you have the definition)
+
+          -   NON_MATLAB_PARSING
+          -   DO_NOT_USE_SHARED_MEMORY
+          -   MAX_EXT_API_CONNECTIONS=255
+          _   CRT_SECURE_NO_WARNINGS
+
+more details: http://www.coppeliarobotics.com/helpFiles/en/remoteApiClientSide.htm
+
+
+These codes are located in **PolarisProxy.cpp** file.
+
+
+    #include "SimulatorProxy.hpp"
+    #include"TechUserProxy.hpp"
+
+    #include <conio.h>
+    #include "windows.h"
+    #include <iostream>
+    #include <stdio.h>
+    #include <stdlib.h>
+    using namespace std;
+    
+    extern "C" {
+    #include "extApi.h"
+     }
+
+    void SimulatorProxy::init() {
+	   
+    simxFinish(-1);  //Finish all previous tasks
+ 
+	   int userclientID = simxStart((simxChar*)"127.0.0.1", 19997, true, true, 50, 5);  //!< Main connection to V-REP   // wait 5      seconds to connect to vrep
+	simxInt syncho = simxSynchronous(userclientID, true);  //Synchronous with client
+	SimulatorProxy::clientID = userclientID;
+	/*
+	simxFinish(-1);                 //! Close any previously unfinished business
+	int clientID1 = 0;
+	clientID1 = simxStart((simxChar*)"127.0.0.1", 19997, true, true, 5000, 5);  //!< Main connection to V-REP   // wait 5 seconds to connect to vrep
+
+	cout << "ClientID=" << clientID1 << "\n";
+
+	Sleep(1000);
+	if (clientID1 != -1)  // if Connection status is OK
+	{
+		cout << " Connection with V-REP established" << endl;
+		simxInt syncho = simxSynchronous(clientID1, true);  //Synchronous with client
+		/*
+		int sim_status;
+		sim_status = simxStartSimulation(clientID1, simx_opmode_oneshot); //start simulation in V-rep 
+		cout << "Simulation status: " << sim_status << endl;
+		if (sim_status == 1) {
+
+			cout << "Simulation Started ..." << endl;
+		}
+		else {
+			cout << "Simulation Not Started ..." << endl;
+		}
+	
+
+	}
+
+	else
+	{
+		cout << " Connection status to VREP: FAILED" << endl;
+	}
+	simxFinish(clientID1);
+
+	*/
+
+    }
+
+
+    void SimulatorProxy::setSimulatedToolData(double *data) {
+
+
+	int userclientID = SimulatorProxy::clientID;
+		
+	//	simxStartSimulation(userclientID, simx_opmode_oneshot); //start simulation in V-rep 
+
+		int polaris_probe = 0;
+		simxGetObjectHandle(userclientID, "Dummy", &polaris_probe, simx_opmode_oneshot_wait);  // Get Shape(RigidBody)
+
+		int polaris_sensor = 0;
+		simxGetObjectHandle(userclientID, "Dummy0", &polaris_sensor, simx_opmode_oneshot_wait);  // Get Shape(RigidBody)
+
+		//Position(X,Y,Z format)  data
+		double	tx = data[0]/1000 ;       //td.transform.tx
+		double	ty = data[1] /1000;      //td.transform.ty
+		double	tz = data[2] /1000;     //td.transform.tz
+
+		//Orientation (Quaternion format)  data
+		double	Q0 = data[3] ;     //td.transform.q0
+		double	Qx = data[4] ;       //td.transform.qx
+		double	Qy = data[5] ;      //td.transform.qy
+		double	Qz =data[6] ;     //td.transform.qz
+
+
+
+	    	std::cout << "Position Data  :" << "X: "<< tx << "\t" << "Y: " <<ty << "\t" << "Z: " << tz << std::endl;
+
+			std::cout << "Orientation Data  :" << "q0: " <<Q0 << "\t" << "qx: " << Qx << "\t" << "qy: " << Qy << "\t" << "qz: " << Qz << std::endl;
+
+			const simxFloat my_position[3] = { tx,ty,tz }; // position of Object(Shape) in  X,Y,Z format 
+
+			const simxFloat my_orientation[4]= {Qx,Qy,Qz,Q0 }; // orientation of Object(Shape) in  {qx,qy,qz,w} "Quaternion " format
+
+			simxSetObjectPosition(userclientID, polaris_probe, polaris_sensor, my_position, simx_opmode_oneshot_wait);  // Set new Object Position
+
+			simxSetObjectQuaternion(userclientID, polaris_probe, polaris_sensor, my_orientation, simx_opmode_oneshot_wait);  // Set new Object Position
+
+  }
 
 
 
