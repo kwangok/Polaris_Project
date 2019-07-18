@@ -1,15 +1,14 @@
-## Polaris_Project (Under Development)
-
+## NDI Polaris Sensor Tracker Project 
 
  <p align="center">
   <img width="260" height="200"  src="https://github.com/ahmadkh1995/Polaris_Project/blob/master/Polaris_Vicra.jpg">
 </p>
 
-This is a project based on Polaris Vicra sensor and has been written in C++ Language and project folder's name is "alba".
+This is a project based on **NDI Polaris Vega sensor** (Also it can be used for Vicra Sensor) and has been written in C++ Language and project code for this framework is located in the folder "alba".
 
-3D Mechanical part of Rigid Body has been designed in FreeCad Design software.
+3D Mechanical part of Rigid Body has been designed in **FreeCad Design software** .
 
-The Simulation environment is V-REP and APIs has been developed in VS2015.
+The Simulation environment is **V-REP** and APIs has been developed in **Visual Studio 2015** .
 
 <br>
  <p align="center">
@@ -21,6 +20,14 @@ The Simulation environment is V-REP and APIs has been developed in VS2015.
  This system will be used in surgery room to assist surgeon in collaberating with a Robotic system.
   <img width="460" height="340"  src="https://github.com/ahmadkh1995/Polaris_Project/blob/master/Polaris%203D/Tracker_project.png">
 </p>
+
+Goals of this project is :
+**I** Design 3D Mechanical part of the tools(Here we have 3 tools) in FreeCAD  and import them as Object to V-Rep environment.
+**II** Connect VS2015 to V-Rep API and send and receive (Position/Orientation) data to Object in V-rep with keyboard's keys
+**III** Connect VS2015 to Polaris Vega's API and recieve some data of tool Markers  
+**V** Visulaize the Polaris Tool in V-rep stimuasly based on Tool's position and data (which is acquiring by Polaris Sensor)
+
+
 below you can see photos of the Designed mechanical part in FreeCad :
 All 3D source files are located in FreeCad folder(.fcstd and .obj).
 
@@ -73,10 +80,6 @@ Framework :
 
 
 
--------------------------------------------------------------------------------------------------------------------
-// Recieve Position Data from Polaris sensor
-
----
 The API Commnads which should be initialized till framework starts to recieve position data
 
 First check flowchart in page-26
@@ -101,7 +104,6 @@ physical location of a port handle.
 
 //Here we have 3 options:
 
-
 8a --->"3D" ---->Returns the latest three-dimensional marker position of a single marker or multiple markers.
 
 8b --->"BX" ---->Returns the latest tool transformations, individual marker positions, and system status in binary format.
@@ -115,7 +117,7 @@ note:  a port handle must be initialized (PINIT) before it can be enabled (PENA)
  If a complete command is received by the system, replies are sent back in the format:
  <Reply><CRC16>.
   
-Some of Low-Level Functions needed for this project :
+**These functions located in CombinedApi.cpp file.**
 
 1.INIT ---->  CombinedApi::initialize()
 
