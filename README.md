@@ -131,85 +131,83 @@ physical location of a port handle.
 
 These functions located in **CombinedApi.cpp** file.
 
-1)INIT ---->  CombinedApi::initialize()
+    1)INIT ---->  CombinedApi::initialize()
 
-2)PHSR ----> CombinedApi::portHandleSearchRequest()
+    2)PHSR ----> CombinedApi::portHandleSearchRequest()
 
-3.PHINF ---->CombinedApi::portHandleInfo()
+    3.PHINF ---->CombinedApi::portHandleInfo()
 
-3a.PHF ----> portHandleFree()
+    3a.PHF ----> portHandleFree()
 
-4.PHRQ ---->CombinedApi::portHandleRequest()
+    4.PHRQ ---->CombinedApi::portHandleRequest()
 
-5.PINIT----> CombinedApi::portHandleInitialize()
+    5.PINIT----> CombinedApi::portHandleInitialize()
 
-6.PENA---->CombinedApi::portHandleEnable()
+    6.PENA---->CombinedApi::portHandleEnable()
 
-7.PVWR---->CombinedApi::loadSromToPort()
+    7.PVWR---->CombinedApi::loadSromToPort()
 
-8.Start to Track  ---->startTracking()
+    8.Start to Track  ---->startTracking()
 
-9.Stop Tracking ---->stopTracking()
+    9.Stop Tracking ---->stopTracking()
 
-10.Get Data (TX) ---->getTrackingDataTX()
+    10.Get Data (TX) ---->getTrackingDataTX()
 
-11.Get Data (BX) ---->getTrackingDataBX()
+    11.Get Data (BX) ---->getTrackingDataBX()
 
-12.Get Data (BX2) ---->getTrackingDataBX2()
+    12.Get Data (BX2) ---->getTrackingDataBX2()
 
-13.Get Errors or warning messages:
+    13.Get Errors or warning messages:
 
- getErrorString()
- getWarningString() 
- getErrorCodeFromResponse()
+     getErrorString()
+     getWarningString() 
+     getErrorCodeFromResponse()
 
-14.Reads the response from the device ----> readResponse() .
+    14.Reads the response from the device ----> readResponse() .
 
-note that for processing the errors/warnings or reply we could use this convertion functions:
+    note that for processing the errors/warnings or reply we could use this convertion functions:
 
-A) string intToString() 
+    A) string intToString() 
 
-B) stringToInt() 
+    B) stringToInt() 
 
-C) errorToString()
+    C) errorToString()
 
 
 These functions located in **MarkerData.cpp** file
 
--Marker status---->MarkerStatus() ---->"OK , MissingOutOfVolume ,Saturated ,..."
+    -Marker status---->MarkerStatus() ---->"OK , MissingOutOfVolume ,Saturated ,..."
 
--markerIndex
+    -markerIndex
 
--The marker position (x,y,z) [mm] ---->double x,y,z
+    -The marker position (x,y,z) [mm] ---->double x,y,z
 
----------------------------------------------------------------------------------------------
 These functions are in **portHandleInfo.cpp**
 
-Returns the port handle as a string---->getPortHandle()
+    Returns the port handle as a string---->getPortHandle()
 
-Returns the tool's revision number---->getRevision()
+    Returns the tool's revision number---->getRevision()
 
-Return the status as a string ----> getStatus() 
+    Return the status as a string ----> getStatus() 
 
----------------------------------------------------------------------------------------------
-These functions are in **GbfData3D.cpp**
+These functions are in **GbfData3D.cpp**  (For this project I didn't use the class)
 
 **This class encapsulates 3D marker data as it is read from BX2**
 
-GbfData3D::GbfData3D(BufferedReader& reader,  int numberOfTools)
+    GbfData3D::GbfData3D(BufferedReader& reader,  int numberOfTools)
 
--Read the data--->toolHandle = reader.get_uint16(); 
-numberOf3Ds = reader.get_uint16();
+    -Read the data--->toolHandle = reader.get_uint16(); 
+    numberOf3Ds = reader.get_uint16();
 
-Put the toolHandle into its own vector ---->toolHandles.push_back(toolHandle);
+    Put the toolHandle into its own vector ---->toolHandles.push_back(toolHandle);
 
-Create a corresponding vector with the 3Ds -----> std::vector<MarkerData> list3Ds;
+    Create a corresponding vector with the 3Ds -----> std::vector<MarkerData> list3Ds;
 
-pos.x = reader.get_double();
+    pos.x = reader.get_double();
 
-pos.y = reader.get_double();
+    pos.y = reader.get_double();
 
-pos.z = reader.get_double();
+    pos.z = reader.get_double();
 
 ### V-Rep API Codes:
 **Notes:** For Connecting the project to V-Rep we should add following directories to the "Additional Include Directories" inside the Visual Studio 2015:
@@ -249,37 +247,33 @@ These codes are located in **PolarisProxy.cpp** file.
     void SimulatorProxy::init() {
 	   
     simxFinish(-1);  //Finish all previous tasks
- 
-	   int userclientID = simxStart((simxChar*)"127.0.0.1", 19997, true, true, 50, 5);  //!< Main connection to V-REP   // wait 5      seconds to connect to vrep
-	simxInt syncho = simxSynchronous(userclientID, true);  //Synchronous with client
-	SimulatorProxy::clientID = userclientID;
+    
+     int userclientID = simxStart((simxChar*)"127.0.0.1", 19997, true, true, 50, 5);  //!< Main connection to V-REP // wait 5    seconds to connect to vrep
+    simxInt syncho = simxSynchronous(userclientID, true);  //Synchronous with client
+    SimulatorProxy::clientID = userclientID;
 	/*
-	simxFinish(-1);                 //! Close any previously unfinished business
-	int clientID1 = 0;
-	clientID1 = simxStart((simxChar*)"127.0.0.1", 19997, true, true, 5000, 5);  //!< Main connection to V-REP   // wait 5 seconds to connect to vrep
+    simxFinish(-1);                 //! Close any previously unfinished business
+    int clientID1 = 0;
+    clientID1 = simxStart((simxChar*)"127.0.0.1", 19997, true, true, 5000, 5);  //!< Main connection to V-REP   // wait 5 seconds to connect to vrep
 
-	cout << "ClientID=" << clientID1 << "\n";
+    cout << "ClientID=" << clientID1 << "\n";
 
-	Sleep(1000);
-	if (clientID1 != -1)  // if Connection status is OK
-	{
-		cout << " Connection with V-REP established" << endl;
-		simxInt syncho = simxSynchronous(clientID1, true);  //Synchronous with client
+    Sleep(1000);
+    if (clientID1 != -1)  // if Connection status is OK
+    {
+    cout << " Connection with V-REP established" << endl;
+    simxInt syncho = simxSynchronous(clientID1, true);  //Synchronous with client
 		/*
-		int sim_status;
-		sim_status = simxStartSimulation(clientID1, simx_opmode_oneshot); //start simulation in V-rep 
-		cout << "Simulation status: " << sim_status << endl;
-		if (sim_status == 1) {
-
-			cout << "Simulation Started ..." << endl;
+    int sim_status;
+    sim_status = simxStartSimulation(clientID1, simx_opmode_oneshot); //start simulation in V-rep 
+    cout << "Simulation status: " << sim_status << endl;
+       if (sim_status == 1) {
+		cout << "Simulation Started ..." << endl;
 		}
 		else {
 			cout << "Simulation Not Started ..." << endl;
 		}
-	
-
 	}
-
 	else
 	{
 		cout << " Connection status to VREP: FAILED" << endl;
@@ -287,47 +281,43 @@ These codes are located in **PolarisProxy.cpp** file.
 	simxFinish(clientID1);
 
 	*/
-
     }
 
 
     void SimulatorProxy::setSimulatedToolData(double *data) {
 
-
 	int userclientID = SimulatorProxy::clientID;
 		
-	//	simxStartSimulation(userclientID, simx_opmode_oneshot); //start simulation in V-rep 
+	//simxStartSimulation(userclientID, simx_opmode_oneshot); //start simulation in V-rep 
 
-		int polaris_probe = 0;
-		simxGetObjectHandle(userclientID, "Dummy", &polaris_probe, simx_opmode_oneshot_wait);  // Get Shape(RigidBody)
+	int polaris_probe = 0;
+	simxGetObjectHandle(userclientID, "Dummy", &polaris_probe, simx_opmode_oneshot_wait);  // Get Shape(RigidBody)
 
-		int polaris_sensor = 0;
-		simxGetObjectHandle(userclientID, "Dummy0", &polaris_sensor, simx_opmode_oneshot_wait);  // Get Shape(RigidBody)
+	int polaris_sensor = 0;
+	simxGetObjectHandle(userclientID, "Dummy0", &polaris_sensor, simx_opmode_oneshot_wait);  // Get Shape(RigidBody)
 
-		//Position(X,Y,Z format)  data
-		double	tx = data[0]/1000 ;       //td.transform.tx
-		double	ty = data[1] /1000;      //td.transform.ty
-		double	tz = data[2] /1000;     //td.transform.tz
+	//Position(X,Y,Z format)  data
+	double	tx = data[0]/1000 ;       //td.transform.tx
+	double	ty = data[1] /1000;      //td.transform.ty
+	double	tz = data[2] /1000;     //td.transform.tz
 
-		//Orientation (Quaternion format)  data
-		double	Q0 = data[3] ;     //td.transform.q0
-		double	Qx = data[4] ;       //td.transform.qx
-		double	Qy = data[5] ;      //td.transform.qy
-		double	Qz =data[6] ;     //td.transform.qz
+	//Orientation (Quaternion format)  data
+	double	Q0 = data[3] ;     //td.transform.q0
+	double	Qx = data[4] ;       //td.transform.qx
+	double	Qy = data[5] ;      //td.transform.qy
+	double	Qz =data[6] ;     //td.transform.qz
 
+	std::cout << "Position Data  :" << "X: "<< tx << "\t" << "Y: " <<ty << "\t" << "Z: " << tz << std::endl;
 
+	std::cout << "Orientation Data  :" << "q0: " <<Q0 << "\t" << "qx: " << Qx << "\t" << "qy: " << Qy << "\t" << "qz: " << Qz   << std::endl;
 
-	    	std::cout << "Position Data  :" << "X: "<< tx << "\t" << "Y: " <<ty << "\t" << "Z: " << tz << std::endl;
+	const simxFloat my_position[3] = { tx,ty,tz }; // position of Object(Shape) in  X,Y,Z format 
 
-			std::cout << "Orientation Data  :" << "q0: " <<Q0 << "\t" << "qx: " << Qx << "\t" << "qy: " << Qy << "\t" << "qz: " << Qz << std::endl;
+	const simxFloat my_orientation[4]= {Qx,Qy,Qz,Q0 }; // orientation of Object(Shape) in  {qx,qy,qz,w} "Quaternion " format
 
-			const simxFloat my_position[3] = { tx,ty,tz }; // position of Object(Shape) in  X,Y,Z format 
+	simxSetObjectPosition(userclientID, polaris_probe, polaris_sensor, my_position, simx_opmode_oneshot_wait);  // Set new Object Position
 
-			const simxFloat my_orientation[4]= {Qx,Qy,Qz,Q0 }; // orientation of Object(Shape) in  {qx,qy,qz,w} "Quaternion " format
-
-			simxSetObjectPosition(userclientID, polaris_probe, polaris_sensor, my_position, simx_opmode_oneshot_wait);  // Set new Object Position
-
-			simxSetObjectQuaternion(userclientID, polaris_probe, polaris_sensor, my_orientation, simx_opmode_oneshot_wait);  // Set new Object Position
+	simxSetObjectQuaternion(userclientID, polaris_probe, polaris_sensor, my_orientation, simx_opmode_oneshot_wait);  // Set new Object Position
 
   }
 
