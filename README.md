@@ -319,12 +319,28 @@ These codes are located in **PolarisProxy.cpp** file.
 
 	simxSetObjectQuaternion(userclientID, polaris_probe, polaris_sensor, my_orientation, simx_opmode_oneshot_wait);  // Set new Object Position
 
-  }
+     }  
 
 
+** In This project , BOOST library has been used to share **data** (a vector which has Position values:X,Y,Z and Orientation values: Q0,Qx,Qy,Qz)
 
+### BOOST Library
+Download the source from [here](https://www.boost.org/users/download/).
+Installation (Linux):
 
+    $ tar xvzf /path/to/boost_1_70_0.tar.gz -C /path/to/somedirectory      // Extract file in specific Directory
+    $ cd path/to/boost_1_70_0  // CD inside the extracted file
+    $ ./bootstrap.sh --help      // If you need more help to build or compile
+    $ ./bootstrap.sh --prefix=path/to/installation/prefix       // Install in specific directory
+    $ ./bootstrap.sh              // or Install in current directory
+    $ ./b2                 // Build Everything
+		
+Installation (Windows):
 
+After extracting the zip file , run the installation file and then Linking the BOOST Installation Directory to the project in Visual Studio:
+**In this project BOOSTLibrary v1.59 which has compatibility with VS2015 (VC140) has been used .
+
+    (Project Properties --> Linking/Input/Additional Directories :  libboost_date_time-vc140-mt-1_59.lib)
 
 
 
