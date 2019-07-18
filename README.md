@@ -324,6 +324,11 @@ These codes are located in **PolarisProxy.cpp** file.
 
 ** In This project , BOOST library has been used to share **data** (a vector which has Position values:X,Y,Z and Orientation values: Q0,Qx,Qy,Qz)
 
+
+
+ <p align="center">
+  <img width="190" height="100"  src="https://github.com/ahmadkh1995/Polaris_Project/blob/master/Tools_Logo/Boost.jpeg">
+ </p>
 ### BOOST Library
 Download the source from [here](https://www.boost.org/users/download/).
 Installation (Linux):
@@ -340,7 +345,9 @@ Installation (Windows):
 After extracting the zip file , run the installation file and then Linking the BOOST Installation Directory to the project in Visual Studio:
 **In this project BOOSTLibrary v1.59 which has compatibility with VS2015 (VC140) has been used .
 
-    (Project Properties --> Linking/Input/Additional Directories :  libboost_date_time-vc140-mt-1_59.lib)
+    (Project Properties --> C/C++ / Additional Include Directories :  "Location of Installed Boost Library" or $BOOST as Global Variable)
+    
+    (Project Properties --> Linker/Input/Additional Directories :  libboost_date_time-vc140-mt-1_59.lib)
 
 
 
