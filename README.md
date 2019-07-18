@@ -23,13 +23,13 @@ The Simulation environment is **V-REP** and APIs has been developed in **Visual 
 
 Goals of this project is :
 
-**I** Design 3D Mechanical part of the tools(Here we have 3 tools) in FreeCAD  and import them as Object to V-Rep environment.
+**I)** Design 3D Mechanical part of the tools(Here we have 3 tools) in FreeCAD  and import them as Object to V-Rep environment.
 
-**II** Connect VS2015 to V-Rep API and send and receive (Position/Orientation) data to Object in V-rep with keyboard's keys.
+**II)** Connect VS2015 to V-Rep API and send and receive (Position/Orientation) data to Object in V-rep with keyboard's keys.
 
-**III** Connect VS2015 to Polaris Vega's API and recieve some data of tool Markers.
+**III)** Connect VS2015 to Polaris Vega's API and recieve some data of tool Markers.
 
-**V** Visulaize the Polaris Tool in V-rep stimuasly based on Tool's position and data (which is acquiring by Polaris Sensor).
+**V)** Visulaize the Polaris Tool in V-rep stimuasly based on Tool's position and data (which is acquiring by Polaris Sensor).
 
 
 below you can see photos of the Designed mechanical part in FreeCad.
@@ -96,48 +96,43 @@ The Polaris Sensor's Low-Level Commnads which should be initialized till framewo
 
 
 
-**Description of Some of main C++ functions in Polaris API 
+**Description of Some of Low-level functions inside Polaris Sensor **
 
-1---> "INIT" ----> Initializes the system.
+1) **INIT** -> Initializes the system.
 
-2--->"PHSR" ---->Returns the number of assigned port handles and the port status for each one. Assigns a port handle
+2) **PHSR** -> Returns the number of assigned port handles and the port status for each one. Assigns a port handle
 to a wired tool, GPIO device, or strober
 
-3--->"PHINF"--->Returns port handle status, information about the tool associated with the port handle, and the
+3) **PHINF** -> Returns port handle status, information about the tool associated with the port handle, and the
 physical location of a port handle.
 
-4---> "PHRQ" ---->Assigns a port handle to a tool or GPIO device.
+4) **PHRQ** -> Assigns a port handle to a tool or GPIO device.
 
-5--->"PVWR" ----> Assigns a tool definition file to a wireless tool, or overrides the SROM device in a wired tool or GPIO device.
+5) **PVWR** -> Assigns a tool definition file to a wireless tool, or overrides the SROM device in a wired tool or GPIO device.
 
-6---> "PINIT" ----> Initializes a port handle
+6) **PINIT** -> Initializes a port handle
 
-7--->"PENA"--->Enables the reporting of transformations for a particular port handle.
+7) **PENA** -> Enables the reporting of transformations for a particular port handle.
 
-8---> Load the Tool(.srom file)
+8) Load the Tool (**.srom file**)
 
 //Here we have 3 options:
 
-8a --->"3D" ---->Returns the latest three-dimensional marker position of a single marker or multiple markers.
+8a) **3D** -> Returns the latest three-dimensional marker position of a single marker or multiple markers.
 
-8b --->"BX" ---->Returns the latest tool transformations, individual marker positions, and system status in binary format.
+8b) **BX** -> Returns the latest tool transformations, individual marker positions, and system status in binary format.
 
-8c --->"TX" ---->Returns the latest tool transformations, individual marker positions, and system status in text format.
+8c) **TX** -> Returns the latest tool transformations, individual marker positions, and system status in text format.
 
-note:  a port handle must be initialized (PINIT) before it can be enabled (PENA).
-
--Commands must be sent from the host computer to the system in one of the two following formats. 
-<Command><SPACE><Parameter1><Parameter2>...<ParameterN><CR>.
- If a complete command is received by the system, replies are sent back in the format:
- <Reply><CRC16>.
+**note:  a port handle must be initialized (PINIT) before it can be enabled (PENA).**
   
-**Description of Some of main C++ functions in Polaris API **
+### Description of Some of main C++ functions in Polaris API **
 
 These functions located in **CombinedApi.cpp** file.
 
-1.INIT ---->  CombinedApi::initialize()
+1)INIT ---->  CombinedApi::initialize()
 
-2.PHSR ----> CombinedApi::portHandleSearchRequest()
+2)PHSR ----> CombinedApi::portHandleSearchRequest()
 
 3.PHINF ---->CombinedApi::portHandleInfo()
 
