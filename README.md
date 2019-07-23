@@ -1,7 +1,7 @@
 ## NDI Polaris Sensor Tracker Project 
 
  <p align="center">
-  <img width="300" height="150"  src="https://github.com/ahmadkh1995/Polaris_Project/blob/master/Polaris_Vega.png">
+  <img width="300" height="150"  src="https://github.com/ahmadkh1995/Polaris_Project/blob/master/Polaris%203D/Polaris_Vega.png">
 </p>
 
 This is a project based on **NDI Polaris Vega sensor** (Also it can be used for Vicra Sensor) and has been written in C++ Language and project code for this framework is located in the folder "alba".
@@ -12,9 +12,9 @@ The Simulation environment is **V-REP** and APIs has been developed in **Visual 
 
 <br>
  <p align="center">
-  <img width="100" height="100"  src="https://github.com/ahmadkh1995/Polaris_Project/blob/master/Freecad.jpg">
-  <img width="130" height="100" style="margin-left=10px;" src="https://github.com/ahmadkh1995/Polaris_Project/blob/master/vrep_logo.png">
-  <img width="150" height="100" style="margin-left=20px;" src="https://github.com/ahmadkh1995/Polaris_Project/blob/master/vs2015.png">
+  <img width="100" height="100"  src="https://github.com/ahmadkh1995/Polaris_Project/blob/master/Polaris%203D/Freecad.jpg">
+  <img width="130" height="100" style="margin-left=10px;" src="https://github.com/ahmadkh1995/Polaris_Project/blob/master/Polaris%203D/vrep_logo.png">
+  <img width="150" height="100" style="margin-left=20px;" src="https://github.com/ahmadkh1995/Polaris_Project/blob/master/Polaris%203D/vs2015.png">
 </p>
  <p align="center">
  This system will be used in surgery room to assist surgeon in collaberating with a Robotic system.
@@ -84,16 +84,7 @@ Framework :
 
 
 
-The Polaris Sensor's Low-Level Commnads which should be initialized till framework starts to recieve position data
-
-### Flowchart of the System(with Low-Level Functions)
-
-<p align="center">
-
-  <img width="280" height="500"  src="https://github.com/ahmadkh1995/Polaris_Project/blob/master/Polaris%203D/FlowChart.PNG">
-</p>
-
-
+The Polaris Sensor's Low-Level Commnads which should be initialized untill framework starts to recieve position data
 
 
 **Description of Some of Low-level functions inside Polaris Sensor **
