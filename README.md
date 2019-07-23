@@ -8,7 +8,7 @@ This is a project based on **NDI Polaris Vega sensor**
 
 It has been developed in association with Prof. Marilena Vendittelli and Dr. Marco Ferro at DIAG Robo Lab June 2019.
 
-The project code for this framework is located in the folder "alba".
+The project code for this framework is located in the folder **alba**.
 
 3D Mechanical part of Rigid Body has been designed in **FreeCad Design software** .
 
@@ -25,7 +25,7 @@ The Simulation environment is **V-REP** and APIs has been developed in **Visual 
   <img width="460" height="340"  src="https://github.com/ahmadkh1995/Polaris_Project/blob/master/Polaris%203D/Tracker_project.png">
 </p>
 
-Goals of this project is :
+Steps of this project's Development:
 
 **I)** Design 3D Mechanical part of the tools(Here we have 3 tools) in FreeCAD  and import them as Object to V-Rep environment.
 
