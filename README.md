@@ -4,7 +4,9 @@
   <img width="300" height="150"  src="https://github.com/ahmadkh1995/Polaris_Project/blob/master/Polaris%203D/Polaris_Vega.png">
 </p>
 
-This is a project based on **NDI Polaris Vega sensor** (Also it can be used for Vicra Sensor) and has been written in C++ Language and project code for this framework is located in the folder "alba".
+This is a project based on **NDI Polaris Vega sensor** (Also it can be used for Vicra Sensor) in association with Prof. Marilena Vendittelli and Dr. Marco Ferro at DIAG Robo Lab June 2019.
+
+The project code for this framework is located in the folder "alba".
 
 3D Mechanical part of Rigid Body has been designed in **FreeCad Design software** .
 
