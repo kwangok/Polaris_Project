@@ -31,9 +31,9 @@ Steps of this project's Development:
 
 **II)** Connect VS2015 to V-Rep API and send and receive (Position/Orientation) data to Object in V-rep with keyboard's keys.
 
-**III)** Connect VS2015 to Polaris Vega's API and recieve some data of tool Markers.
+**III)** Connect VS2015 to Polaris Vega's API and receive some data of tool Markers.
 
-**IV)** Visulaize the Polaris Tool in V-rep stimuasly based on Tool's position and data (which is acquiring by Polaris Sensor).
+**IV)** Visulaize the Polaris Tool in V-rep simultaneous based on Tool's position and data (which is acquiring by Polaris Sensor).
 
 
 below you can see photos of the Designed mechanical part in FreeCad.
