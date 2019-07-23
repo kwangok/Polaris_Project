@@ -61,6 +61,15 @@ void SimulatorProxy::init() {
 	int userclientID = simxStart((simxChar*)"127.0.0.1", 19997, true, true, 50, 5);  //!< Main connection to V-REP   // wait 5 seconds to connect to vrep
 	simxInt syncho = simxSynchronous(userclientID, true);  //Synchronous with client
 	SimulatorProxy::clientID = userclientID;
+
+	if (userclientID != -1)  // if Connection status is OK
+	{
+		cout << " Connection with V-REP established" << endl;
+	}
+	else
+	{
+		cout << " Connection with V-REP failed" << endl;
+	}
 	/*
 	simxFinish(-1);                 //! Close any previously unfinished business
 	int clientID1 = 0;
@@ -99,7 +108,7 @@ void SimulatorProxy::init() {
     }
 
 
-void SimulatorProxy::setSimulatedToolData(double *data) {
+void SimulatorProxy::setSimulatedToolData(double *data,int error_flag) {
 
 
 	int userclientID = SimulatorProxy::clientID;
@@ -107,27 +116,49 @@ void SimulatorProxy::setSimulatedToolData(double *data) {
 	//	simxStartSimulation(userclientID, simx_opmode_oneshot); //start simulation in V-rep 
 
 		int polaris_probe = 0;
-		simxGetObjectHandle(userclientID, "Shape", &polaris_probe, simx_opmode_oneshot_wait);  // Get Shape(RigidBody)
+		simxGetObjectHandle(userclientID, "Dummy", &polaris_probe, simx_opmode_oneshot_wait);  // Get Shape(RigidBody)
 
-		//Position  data
-		
-		double	Rx = data[4] *(-1) ;       //td.transform.Rx
-		double	Ry = data[5] * (-1);      //td.transform.Ry
-		double	Rz =data[6] * (-1);     //td.transform.Rz
+		int polaris_sensor = 0;
+		simxGetObjectHandle(userclientID, "Dummy0", &polaris_sensor, simx_opmode_oneshot_wait);  // Get Shape(RigidBody)
 
-	    	std::cout << "Real Data  :" << data[4] << "\t" << data[5] << "\t" << data[6] << std::endl;
-			std::cout << "Data  to Vrep :" << Rx << "\t" << Ry << "\t" << Rz << std::endl;
-			const simxFloat my_position[3] = { Rx,Ry,Rz }; //position of Object(Shape) in  X,Y,Z format inside Vrep
+		//Position(X,Y,Z format)  data
+		double	tx = data[0]/1000 ;       //td.transform.tx
+		double	ty = data[1] /1000;      //td.transform.ty
+		double	tz = data[2] /1000;     //td.transform.tz
 
-			simxSetObjectPosition(userclientID, polaris_probe, -1, my_position, simx_opmode_oneshot_wait);  // Set new Object Position
+		//Orientation (Quaternion format)  data
+		double	Q0 = data[3] ;     //td.transform.q0
+		double	Qx = data[4] ;       //td.transform.qx
+		double	Qy = data[5] ;      //td.transform.qy
+		double	Qz =data[6] ;     //td.transform.qz
 
-			
+		std::cout << "Error Flag : " << error_flag << std::endl;
 
-		
+		if (error_flag == 1) {
+			int signal_value = 1;
+			simxSetIntegerSignal(userclientID, "Error_flag", signal_value, simx_opmode_oneshot_wait);	
+		}
+		if (error_flag == 0) {
+			int signal_value = 0;
+			simxSetIntegerSignal(userclientID, "Error_flag", signal_value, simx_opmode_oneshot_wait);
+		}
+
+	    	std::cout << "Position Data  :" << "X: "<< tx << "\t" << "Y: " <<ty << "\t" << "Z: " << tz << std::endl;
+
+			std::cout << "Orientation Data  :" << "q0: " <<Q0 << "\t" << "qx: " << Qx << "\t" << "qy: " << Qy << "\t" << "qz: " << Qz << std::endl;
+
+			const simxFloat my_position[3] = { tx,ty,tz }; // position of Object(Shape) in  X,Y,Z format 
+
+			const simxFloat my_orientation[4]= {Qx,Qy,Qz,Q0 }; // orientation of Object(Shape) in  {qx,qy,qz,w} "Quaternion " format
+
+			simxSetObjectPosition(userclientID, polaris_probe, polaris_sensor, my_position, simx_opmode_oneshot_wait);  // Set new Object Position
+
+			simxSetObjectQuaternion(userclientID, polaris_probe, polaris_sensor, my_orientation, simx_opmode_oneshot_wait);  // Set new Object Position
 
 		
 
 }
+
 
 
 /**

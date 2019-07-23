@@ -29,7 +29,7 @@ public:
 
 	int clientID;
 
-	void setSimulatedToolData(double* data);
+	void setSimulatedToolData(double* data, int error_flag);
 
 
 	/**

@@ -24,6 +24,7 @@ public:
 	*/
 	~TechUserProxy();
 
+
 	/**
 	* @brief Allow selection of the action for the user
 	* @param the code of the chosen option

@@ -16,6 +16,7 @@ public:
 	double* recieved_data;
 
 
+
 	/**
 	*@brief Default constructor of the SimulatorVisualizer Class
 	*/
@@ -38,7 +39,8 @@ public:
 	void initVREP();
 
  
-	inline void sendDataToSimProxy(double* data) {sp.setSimulatedToolData(data);	}
+	inline void sendDataToSimProxy(double* data,  int error_flag) {sp.setSimulatedToolData(data, error_flag) ;	}
+
 
 private:
 

@@ -46,7 +46,7 @@ int TechUserProxy::sendRequest(const int& req, const char** argv){
 * @brief Method that forwards the request to track the Polaris markers and show them in the simulator
 * @param the set of input arguments passed to the program
 */
-bool TechUserProxy::requestForTrackSimulator(const char** argv){
+bool TechUserProxy::requestForTrackSimulator(const char** argv) {
 
 #ifdef DEBUG
 	std::cout << "[U] Forwarding Simulator procedure request ... " << std::endl;
@@ -58,12 +58,27 @@ bool TechUserProxy::requestForTrackSimulator(const char** argv){
 	std::vector<std::string> toolNames;
 	std::string polarisShdMemName;
 	int toolOption = NULL;
-    int key = 0;
-    bool kbhitFlag = false;
-	double* data;
+	int key = 0;
+	bool kbhitFlag = false;
 	KeyboardHandler kb;
 	Timer clock;
 
+	
+	double* data;
+	double* data_prev;
+
+	data = new double[POSE_DIM];
+	data_prev = new double[POSE_DIM];
+
+	// Initialize data and prev_data
+	for (int i = 0; i < POSE_DIM; i++) {
+		data_prev[i] = 0;
+		data[i] = 0;
+	}
+
+	int error_flag;
+	
+	
 	// Create a static instance of the coordinator class SimulatedTracker
 	SimulatedTracker simTrack;
 
@@ -110,12 +125,50 @@ bool TechUserProxy::requestForTrackSimulator(const char** argv){
 
 		// 7. Read data from shared memory
 		data = simTrack.readDataFromShdMem();
+		
+		//Max ,Min values
+		int x_max=1312/2;
+		int x_min=-1312/2;
+		int y_max= 1566/2;
+		int y_min=-1566/2;
+		int z_max=-700;
+		int z_min=-2400;
 
-		// Print acquired data
-		//this->printToolData(data);
+		//Error Value = -3.69731e+28
+		// check if data is not correct
+		if ( ( data[0] >x_max || data[0]<x_min )  ||  (data[1]>y_max || data[1] <y_min)  ||  (data[2] >z_max || data[2] < z_min)  )
 
-		//Send Data to SimulatedTracker 
-		simTrack.sendDataToSimProxy(data);
+			{
+				std::cout << "--------------------------------Error Value---------------------------------------" << std::endl;
+				std::cout << "Data inside the IF Condition : "<<"X="<<data[0] << "\t Y=" << data[1]<<"\t Z="<<data[2]<<std::endl;
+				error_flag = 1;
+				for (int i = 0; i < POSE_DIM; i++) 
+				  {
+					data[i] = data_prev[i] ; // Keep previous data and send it			 
+     				}
+				}
+		
+		else
+				{
+
+			error_flag = 0;
+			for (int i = 0; i < POSE_DIM; i++)
+			   {
+			    	data_prev[i]=data[i] ;
+	            }
+				//data_prev = data;  //Send current Data and Updata previous data
+				std::cout << "Data inside the ELSE Condition : " << "X=" << data[0] << "\t Y=" << data[1] << "\t Z=" << data[2] << std::endl;
+
+		         }
+		
+		std::cout << "Current Data:" << "X: " << data[0] << "\t" << "Y: " << data[1] << "\t" << "Z: " << data[2] << std::endl;
+		std::cout << "Previous Data:" << "X: " << data_prev[0] << "\t" << "Y: " << data_prev[1] << "\t" << "Z: " << data_prev[2] << std::endl;
+
+
+			//Send Data to SimulatedTracker 
+		simTrack.sendDataToSimProxy(data, error_flag);
+	
+
 		//----------------------------------------------------------------//
 
 		// Measure the ending time and the elapsed time
@@ -141,6 +194,10 @@ bool TechUserProxy::requestForTrackSimulator(const char** argv){
 	std::cout << "done." << std::endl;
 	std::cout << "Waiting for thread to return ... ";
 #endif //DEBUG
+
+	// Erase pointers
+	delete data;
+	delete data_prev;
 
 	// N. Remove the shared memory
 	simTrack.removeShdMem();

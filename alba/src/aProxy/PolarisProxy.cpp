@@ -164,7 +164,7 @@ void PolarisProxy::enableTracking() {
 	// Start tracking
 	capi->startTracking();
 
-	int i = 0;
+
 
 	while (this->tracking) {
 
@@ -174,43 +174,66 @@ void PolarisProxy::enableTracking() {
 		//----------------------------------------------------------------//
 		// Do stuff here... 
 
-		std::vector<ToolData> td = (this->apiSupportsBX2) ? capi->getTrackingDataBX2("--6d=tools --3d=none --sensor=none --1d=buttons") : capi->getTrackingDataBX();
-		
-	//	std::cout << "Start Printing Data \n";
-		// Print the acquired data from ToolData structure (works only in DEBUG mode)
-		this->printTrackingData(td);
-//		trackingDataPrint(td);
-		std::cout << td.size()<<std::endl;
-		
-		//Map the whole shared memory in this process
-		mapped_region region(shm_obj, read_write);
+		std::vector<ToolData>td = (this->apiSupportsBX2) ? capi->getTrackingDataBX2("--6d=tools --3d=none --sensor=none --1d=buttons") : capi->getTrackingDataBX();
+		/*
+		std::vector<ToolData>send_data = (this->apiSupportsBX2) ? capi->getTrackingDataBX2("--6d=tools --3d=none --sensor=none --1d=buttons") : capi->getTrackingDataBX();
+		std::vector<ToolData >td;
+		std::vector<std::vector<ToolData>>save_data; //A vector of vector with ToolData types
+		for (int i = 1; i >= 1; i++) {
+			save_data[i][]=send_data; //store data in a vector of vector 
 
-		// Convert acquired data in a static array
-		tdVal = this->toolData2StaticArray(td[0]);
+			//Check Tool data validity
 
-		//Write on the shared memory // TODO: PUT A MUTEX HERE
-		std::memcpy(region.get_address(), tdVal, sizeof(double)*POSE_DIM);
+			for (int k = 0; k < save_data[i].size(); k++)
+			{
+				if (save_data[i][k].transform.tx >= -400)  //Valid Range of ToolData
+				{
+					td = save_data[i]; //send new ToolData to Memory
+				}
+				else
+				{
+					std::cout << "Tool data is not Valid" << std::endl;
+					td = save_data[i - 1]; //Send Previous ToolData to Memory
 
+				}
+			}
 
-		// Print the acquired data from ToolData structure (works only in DEBUG mode)
-		//this->printTrackingData(static_cast<double*>(region.get_address()));
-
-		//----------------------------------------------------------------//
-
-		// Measure the ending time and the elapsed time
-		toc = clock.getCurTime();
-		dt = clock.elapsedTime(tic, toc);
-
-		// Wait until Ts
-		if (dt < Ts) {
-			clock.timeSleep(Ts - dt);
 		}
+		*/
+			// Print the acquired data from ToolData structure (works only in DEBUG mode)
+			this->printTrackingData(td);
+			//	trackingDataPrint(td);
+			std::cout << td.size() << std::endl;
 
-		// Measure the final time after sleep to check the actual rate of the thread
-		tac = clock.getCurTime();
-		et = clock.elapsedTime(tic, tac);
+			//Map the whole shared memory in this process
+			mapped_region region(shm_obj, read_write);
 
-		i++;
+			// Convert acquired data in a static array
+			tdVal = this->toolData2StaticArray(td[0]);
+
+			//Write on the shared memory // TODO: PUT A MUTEX HERE
+			std::memcpy(region.get_address(), tdVal, sizeof(double)*POSE_DIM);
+
+
+			// Print the acquired data from ToolData structure (works only in DEBUG mode)
+			//this->printTrackingData(static_cast<double*>(region.get_address()));
+
+			//----------------------------------------------------------------//
+
+			// Measure the ending time and the elapsed time
+			toc = clock.getCurTime();
+			dt = clock.elapsedTime(tic, toc);
+
+			// Wait until Ts
+			if (dt < Ts) {
+				clock.timeSleep(Ts - dt);
+			}
+
+			// Measure the final time after sleep to check the actual rate of the thread
+			tac = clock.getCurTime();
+			et = clock.elapsedTime(tic, tac);
+
+		
 
 #ifdef DEBUG
 		//std::cout << "[PP] Running rate " << 1.0/et << " Hz" << std::endl;
@@ -315,8 +338,6 @@ void PolarisProxy::printTrackingData(const std::vector<ToolData>& td) {
 
 	for (int i = 0; i < td.size(); i++) {
 		
-		// Print Data (Also In Release Mode)
-	//	std::cout << "Position: " << td[i].transform.tx << ", " << td[i].transform.ty << ", " << td[i].transform.tz << " " << std::endl;
 
 	#ifdef DEBUG
 		std::cout << "Frame #" << i + 1 << ": " << std::endl;
