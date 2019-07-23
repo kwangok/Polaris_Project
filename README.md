@@ -4,7 +4,9 @@
   <img width="300" height="150"  src="https://github.com/ahmadkh1995/Polaris_Project/blob/master/Polaris%203D/Polaris_Vega.png">
 </p>
 
-This is a project based on **NDI Polaris Vega sensor** (Also it can be used for Vicra Sensor) in association with Prof. Marilena Vendittelli and Dr. Marco Ferro at DIAG Robo Lab June 2019.
+This is a project based on **NDI Polaris Vega sensor** 
+
+It has been developed in association with Prof. Marilena Vendittelli and Dr. Marco Ferro at DIAG Robo Lab June 2019.
 
 The project code for this framework is located in the folder "alba".
 
