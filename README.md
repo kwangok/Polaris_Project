@@ -20,8 +20,10 @@ The Simulation environment is **V-REP** and APIs has been developed in **Visual 
   <img width="130" height="100" style="margin-left=10px;" src="https://github.com/ahmadkh1995/Polaris_Project/blob/master/Polaris%203D/vrep_logo.png">
   <img width="150" height="100" style="margin-left=20px;" src="https://github.com/ahmadkh1995/Polaris_Project/blob/master/Polaris%203D/vs2015.png">
 </p>
- <p align="center">
+
  This system will be used in surgery room to assist surgeon in collaberating with a Robotic system.
+
+ <p align="center">
   <img width="460" height="340"  src="https://github.com/ahmadkh1995/Polaris_Project/blob/master/Polaris%203D/Tracker_project.png">
 </p>
 
