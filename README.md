@@ -327,7 +327,7 @@ These codes are located in **PolarisProxy.cpp** file.
   <img width="190" height="100"  src="https://github.com/ahmadkh1995/Polaris_Project/blob/master/Polaris%203D/Boost.jpeg">
  </p>
 
-Installation (Linux):
+**Installation (Linux):**
 
     $ tar xvzf /path/to/boost_1_59_0.tar.gz -C /path/to/somedirectory      // Extract file in specific Directory
     $ cd path/to/boost_1_59_0     // CD inside the extracted file
@@ -336,7 +336,7 @@ Installation (Linux):
     $ ./bootstrap.sh             // or Install in current directory
     $ ./b2                      // Build Everything
 		
-Installation (Windows):
+**Installation (Windows):**
 
 After extracting the zip file , run the installation file and then Linking the BOOST Installation Directory to the project in Visual Studio:
 **In this project BOOSTLibrary v1.59 which has compatibility with VS2015 (VC140) has been used .
@@ -344,6 +344,32 @@ After extracting the zip file , run the installation file and then Linking the B
     (Project Properties --> C/C++ / Additional Include Directories :  "Location of Installed Boost Library" or $BOOST as Global Variable)
     
     (Project Properties --> Linker/Input/Additional Directories :  libboost_date_time-vc140-mt-1_59.lib)
+
+
+**Run .exe file of the Project :**
+
+*Note:* ToolDefinition files (.rom) of the passive tools are not included in the project folder.
+
+ <p align="center">
+ <img width="500" height="250"  src="https://github.com/ahmadkh1995/Polaris_Project/blob/master/Polaris%203D/p2.PNG">
+ <img width="500" height="120"  src="https://github.com/ahmadkh1995/Polaris_Project/blob/master/Polaris%203D/p3.PNG">
+ <img width="500" height="250"  src="https://github.com/ahmadkh1995/Polaris_Project/blob/master/Polaris%203D/p4.PNG">
+ <img width="500" height="310"  src="https://github.com/ahmadkh1995/Polaris_Project/blob/master/Polaris%203D/p5.PNG">
+</p>
+
+**Simulation in V-rep :**
+
+If the tool in V-rep recieves an error data or out of range values ,an **Error_flag** will be triggred and the color of the tool will be changed to red.
+
+<p align="center">
+ <img width="350" height="270"  src="https://github.com/ahmadkh1995/Polaris_Project/blob/master/Polaris%203D/p6.PNG">
+ <img width="350" height="270"  src="https://github.com/ahmadkh1995/Polaris_Project/blob/master/Polaris%203D/p7.PNG">
+</p>
+
+
+
+
+
 
 
 
